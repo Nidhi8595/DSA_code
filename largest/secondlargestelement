@@ -1,0 +1,54 @@
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+
+void sl(int ar[], int s)
+{
+    int l = ar[0];
+    int sec = -1;
+    for (int j = 1; j < s; j++)
+    {
+        if (ar[j] > l)
+        {
+            sec = l;
+            l = ar[j];
+        }
+        else if (ar[j] < l && ar[j] > sec)
+        {
+            sec = ar[j];
+        }
+    }
+    cout << "Second largest element is-> " << sec << endl;
+}
+void ss(int ar2[], int si)
+{
+    int sm = ar2[0];
+    int ssm = INT_MAX;
+    for (int k = 1; k < si; k++)
+    {
+        if (ar2[k] < sm)
+        {
+            ssm = sm;
+            sm = ar2[k];
+        }
+        else if (ar2[k] != sm && ar2[k] < ssm)
+        {
+            ssm = ar2[k];
+        }
+    }
+    cout << "Second smallest element is-> " << ssm << endl;
+}
+int main()
+{
+    int n;
+    cout << "Enter the size of array-> ";
+    cin >> n;
+    int arr[n];
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    sl(arr, n);
+    ss(arr, n);
+    return 0;
+}

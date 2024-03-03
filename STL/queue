@@ -1,0 +1,30 @@
+// #include<iostream>
+// #include<queue>
+#include<bits/stdc++.h>
+using namespace std;
+void printQ(queue<string> queuename)
+{
+    while(!queuename.empty())
+    {
+        cout<<queuename.front()<<endl;
+        queuename.pop();
+    }
+}
+int main(){
+    queue<string>q;
+    q.push("Blue");
+    q.push("Yellow");
+    q.push("White");
+    q.push("Black");
+    q.push("Red");
+    int si=q.size();
+    cout<<"Size of Queue->"<<si<<endl;
+    printQ(q);
+    cout<<"First element->"<<q.front()<<endl;
+    q.pop();
+    cout<<"After pop-> "<<endl;
+    // deleted from rear FIFO
+    printQ(q);
+
+    return 0;
+}

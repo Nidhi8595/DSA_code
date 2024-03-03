@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// optimized code
+
+void mz(int arr[], int s)
+{
+    int j = -1;
+    for (int k = 0; k < s; k++)
+    {
+        if (arr[k] == 0)
+        {
+            j = k;
+            break;
+        }
+    }
+    if (j == -1)
+        return;
+    for (int l = j + 1; l < s; l++)
+    {
+        if (arr[l] != 0)
+        {
+            swap(arr[l], arr[j]);
+            j++;
+        }
+    }
+}
+int main()
+{
+    int n, a;
+    cout << "Enter the size of array-> ";
+    cin >> n;
+    int ar[n];
+    for (int i = 0; i < n; i++)
+    {
+        cin >> ar[i];
+    }
+    mz(ar, n);
+    for (int i = 0; i < n; i++)
+    {
+        cout << ar[i] << " ";
+    }
+    return 0;
+}

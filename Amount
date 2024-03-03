@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int a;
+    int h = 0, f = 0, t = 0;
+    cout << "Enter  total amount: " << endl;
+    cin >> a;
+    while ((a / 100) != 0)
+    {
+        h = h + 1;
+        a = a - 100;
+    }
+    while ((a / 50) != 0)
+    {
+        f = f + 1;
+        a = a - 50;
+    }
+    while ((a / 20) != 0)
+    {
+        t = t + 1;
+        a = a - 20;
+    }
+    cout << h << " Hundred rupee notes" << endl;
+    cout << f << " Fifty rupee notes" << endl;
+    cout << t << " Twenty rupee notes" << endl;
+    cout << a << " One rupee notes" << endl;
+    return 0;
+}

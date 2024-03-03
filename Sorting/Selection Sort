@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+void ssort(int num[], int n)
+{
+    for (int j = 0; j < n - 1; j++)
+    {
+        int min = j;
+        for (int k = j; k < n; k++)
+        {
+            if (num[k] < num[min])
+            {
+                num[min] = num[min] + num[k];
+                num[k] = num[min] - num[k];
+                num[min] = num[min] - num[k];
+            }
+        }
+    }
+}
+int main()
+{
+    int size, i;
+    cout << "Enter the size of array: ";
+    cin >> size;
+    int num[100];
+    cout << "Enter array elements: ";
+    for (i = 0; i < size; i++)
+    {
+        cin >> num[i];
+    }
+    ssort(num, size);
+    cout << "Array after sorting" << endl;
+    for (i = 0; i < size; i++)
+    {
+        cout << num[i] << " ";
+    }
+
+    return 0;
+}

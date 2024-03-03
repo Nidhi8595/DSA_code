@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+#include<deque>
+using namespace std;
+
+int main(){
+    //two pointers in deque
+    int arr[]={1,2,7,8};
+    deque<int>d;
+    d.push_back(1);
+    d.push_back(5);
+    d.push_front(4);
+    d.push_front(9);
+    cout<<endl;
+    cout<<"Print first index element->"<<d.at(1)<<endl;
+    cout<<"Front->"<<d.front()<<endl;
+    cout<<"Back->"<<d.back()<<endl;
+    cout<<"Empty or not->"<<d.empty()<<endl;
+    cout<<"Before erase size->"<<d.size()<<endl;
+    d.erase(d.begin(),d.begin()+2);//will not erase d.begin()+2 element bcuz elements before this limit needs to be deleted only 
+    cout<<"After erase size->"<<d.size()<<endl;
+    for(int i:d)
+    {
+        cout<<i<<endl;
+    }
+    for(int i:arr)
+    {
+        cout<<i<<endl;
+    }
+
+    return 0;
+}

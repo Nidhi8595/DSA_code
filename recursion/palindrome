@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool p(string s, int a, int i)
+{
+    // if(i>=a/2)
+    if (i >= a - i - 1)
+    {
+        return 1;
+    }
+    if (s[i] != s[a - 1 - i])
+    {
+        return 0;
+    }
+    p(s, a, i + 1);
+}
+int main()
+{
+    string s;
+    cout << "Enter a string->" << endl;
+    cin >> s;
+    int n = s.length();
+    if (p(s, n, 0))
+    {
+        cout << "Palindrome" << endl;
+    }
+    else
+    {
+        cout << "Not Palindrome" << endl;
+    }
+    return 0;
+}

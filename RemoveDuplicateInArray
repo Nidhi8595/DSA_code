@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+int rduplicate(int arr[], int s)
+{
+    int i = 0;
+    for (int j = 1; j < s; j++)
+    {
+        if (arr[j] != arr[i])
+        {
+            arr[i + 1] = arr[j];
+            i++;
+        }
+    }
+    return i + 1;
+    //  or return i;
+}
+int main()
+{
+    int n;
+    cout << "Enter the size of array-> ";
+    cin >> n;
+    int ar[n];
+    cout << "Enter array elements->" << endl;
+    for (int k = 0; k < n; k++)
+    {
+        cin >> ar[k];
+    }
+    // printing the unique elements
+    int r = rduplicate(ar, n);
+    for (int b = 0; b < r; b++)
+    //  or for (int b = 0; b <= r; b++)
+    {
+        cout << ar[b] << " ";
+    }
+    return 0;
+}

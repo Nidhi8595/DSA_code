@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+// better approach
+void zeroMatrix(vector<vector<int>> &arr, int n, int m)
+{
+    int row[n] = {0}, col[m] = {0};
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (arr[i][j] == 0)
+            {
+                if (row[i] != 1)
+                {
+                    row[i] = 1;
+                    if (col[j] != 1)
+                    {
+                        col[j] = 1;
+                    }
+                }
+            }
+        }
+    }
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (row[i] || col[j] && arr[i][j]!=0)
+            {
+                arr[i][j] = 0;
+            }
+        }
+    }
+}
+int main()
+{
+    int n, m;
+    cout << "Enter number of rows and columns(n,m):-";
+    cin >> n >> m;
+    vector<vector<int>> ar1;
+    cout << "Enter elements: " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        vector<int> temp;
+        for (int j = 0; j < m; j++)
+        {
+            int val;
+            cin >> val;
+            temp.push_back(val);
+        }
+        ar1.push_back(temp);
+    }
+    zeroMatrix(ar1, n, m);
+    cout << "The final matrix is:" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cout << ar1[i][j] << " ";
+        }
+        cout << endl;
+    }
+    return 0;
+}

@@ -1,0 +1,23 @@
+#include<iostream>
+using namespace std;
+
+int main()
+{
+    char c;
+    cout<<"Enter a character: "<<endl;
+    cin>>c;
+    int n=int(c);
+    if(n>=65 && n<=90)
+    {
+        cout<<"UPPRCASE"<<endl;
+    }
+    if(n>=97 && n<=122)
+    {
+        cout<<"lowercase"<<endl;
+    }
+    if(n>=30 && n<=57)
+    {
+        cout<<"digits"<<endl;
+    }
+    return 0;
+}

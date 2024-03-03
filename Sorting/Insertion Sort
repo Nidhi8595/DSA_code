@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+void isort(int num[], int n)
+{
+    int j, k;
+    for (j = 1; j < n; j++)
+    {
+        int temp = num[j];
+        for (k = j - 1; k >= 0; k--)
+        {
+            if (num[k] > temp)
+            {
+                num[k + 1] = num[k];
+            }
+            else
+            {
+                break;
+            }
+        }
+        num[k+1]=temp;
+    }
+}
+int main()
+{
+    int size, i;
+    cout << "Enter the size of array: ";
+    cin >> size;
+    int num[100];
+    cout << "Enter array elements: ";
+    for (i = 0; i < size; i++)
+    {
+        cin >> num[i];
+    }
+    isort(num, size);
+    cout << "Array after sorting" << endl;
+    for (i = 0; i < size; i++)
+    {
+        cout << num[i] << " ";
+    }
+
+    return 0;
+}

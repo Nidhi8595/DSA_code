@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// brute code
+
+void mz(int arr[], int s)
+{
+    vector<int> temp;
+    for (int j = 0; j < s; j++)
+    {
+        if (arr[j] != 0)
+        {
+            temp.push_back(arr[j]);
+        }
+    }
+    int count = temp.size();
+    for (int k = 0; k < count; k++)
+    {
+        arr[k] = temp[k];
+    }
+    for (int l = count; l < s; l++)
+    {
+        arr[l] = 0;
+    }
+}
+int main()
+{
+    int n, a;
+    cout << "Enter the size of array-> ";
+    cin >> n;
+    int ar[n];
+    for (int i = 0; i < n; i++)
+    {
+        cin >> ar[i];
+    }
+    mz(ar, n);
+    for (int i = 0; i < n; i++)
+    {
+        cout << ar[i] << " ";
+    }
+    return 0;
+}

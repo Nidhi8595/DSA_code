@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+// parameterised recusrion
+void fact(int n, int s)
+{
+    if (n == 1)
+    {
+        cout << s << endl;
+        return;
+    }
+    fact(n-1, s * n);
+}
+int main()
+{
+    int n;
+    cout << "Enter the number to calculate factorial->" << endl;
+    cin >> n;
+    fact(n, 1);
+    return 0;
+}

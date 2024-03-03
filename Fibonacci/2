@@ -1,0 +1,17 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+    int n,i,t1=1,t2=1,next=2;
+    cout<<"Enter the no. of terms"<<endl;
+    cin>>n;
+    cout<<"Fibonacci series of elements: 0 1 1 ";
+    for(i=4;i<=n;i++)
+    {
+        cout<<next<<" ";
+        t1=t2;
+        t2=next;
+        next=t1+t2;
+    }
+    return 0;
+}

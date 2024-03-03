@@ -1,0 +1,33 @@
+#include <iostream>
+using namespace std;
+// optimized code
+void mn(int ar[], int s)
+{
+    int xor1 = 0;
+    for (int i = 1; i <= s; i++)
+    {
+        xor1 = xor1 ^ i;
+    }
+    int xor2 = 0;
+    for (int j = 0; j < s - 1; j++)
+    {
+        xor2 = xor2 ^ ar[j];
+    }
+    int m = xor1 ^ xor2;
+    cout << "The missing number is-> " << m << endl;
+}
+int main()
+{
+    int arr[100], i, size;
+    cout << "Enter the size of array ";
+    cin >> size;
+    cout << "Enter array elements(integers only from 1 till size) " << endl;
+    for (i = 0; i < size - 1; i++)
+    {
+        cin >> arr[i];
+    }
+
+    mn(arr, size);
+
+    return 0;
+}

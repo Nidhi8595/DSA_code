@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+void arpr(int n)
+{
+    int ans = (3 * n) + 7;
+    cout << n << " term is: " << ans << endl;
+}
+int main()
+{
+    int n, c;
+    cout << "Press 1 to calculate result." << endl;
+    cout << "Press 2 to exit." << endl;
+    do
+    {
+        cout << "Enter your choice: ";
+        cin >> c;
+        switch (c)
+        {
+        case 1:
+        {
+            cout << "Enter the term of A.P you wanna calculate: ";
+            cin >> n;
+            arpr(n);
+            break;
+        }
+        case 2:
+        {
+            cout << "END" << endl;
+            break;
+        }
+        }
+    } while (c != 2);
+    return 0;
+}

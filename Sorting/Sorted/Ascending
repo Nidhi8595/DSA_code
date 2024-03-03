@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool sorted(int arr[], int s)
+{
+    for (int j = 0; j < s - 1; j++)
+    {
+        if (arr[j] <= arr[j + 1])
+        {
+            // keep traversing
+        }
+        else
+        {
+            return false; // if one time control enters this condn it immediately returns false and exit the loop
+        }
+    }
+    return true;
+}
+int main()
+{
+    int n;
+    cout << "Enter the size of array-> ";
+    cin >> n;
+    int ar[n];
+    for (int i = 0; i < n; i++)
+    {
+        cin >> ar[i];
+    }
+    if (sorted(ar,n))
+    {
+        cout << "Sorted in Ascending order" << endl;
+    }
+    else
+    {
+        cout << "Not sorted" << endl;
+    }
+    return 0;
+}

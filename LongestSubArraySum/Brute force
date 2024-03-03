@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+#include <algorithm>
+// brute force
+using namespace std;
+void sub(int ar[], int s, int k)
+{
+    int sum;
+    int mm = 0;
+    for (int j = 0; j < s; j++)
+    {
+        for (int a = j; a < s; a++)
+        {
+            sum = 0;
+            for (int b = j; b <= a; b++)
+            {
+                sum += ar[b];
+            }
+            if (sum == k)
+            {
+                mm = max(mm, a - j + 1);
+            }
+        }
+    }
+    cout << mm;
+}
+int main()
+{
+    int n, k;
+    cout << "Enter size of array->";
+    cin >> n;
+    int arr[n];
+    cout << "Enter elements->" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the sum->" << endl;
+    cin >> k;
+    sub(arr, n, k);
+    return 0;
+}

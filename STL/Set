@@ -1,0 +1,36 @@
+// #include<iostream>
+// #include<set>
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+    set<int>s;
+    s.insert(5);
+    s.insert(7);
+    s.insert(3);
+    s.insert(2);
+    s.insert(5);
+    s.insert(5);
+    s.insert(9);
+    s.insert(2);
+    for(auto i:s){
+        cout<<i<<endl;
+    }
+    cout<<endl;
+    // printed in increasing order cuz ordered set
+    cout<<"4 is present->"<<s.count(4)<<" time"<<endl;
+    cout<<"2 is present->"<<s.count(2)<<" time"<<endl;
+    cout<<"5 is present->"<<s.count(5)<<" time"<<endl;
+    // even if 2 and 5 are inserted more than once(unique elements)
+    // s.erase(s.begin());
+    set<int>::iterator it=s.begin();
+    it++;
+    it++; 
+    s.erase(it);
+    for(auto i:s)
+    {
+        cout<<i<<endl;
+    }
+
+    return 0;
+}

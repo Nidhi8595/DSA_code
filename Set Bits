@@ -1,0 +1,29 @@
+#include <iostream>
+#include<stdio.h>
+#include<math.h>
+using namespace std;
+
+
+int setb(int n)
+{
+   int count = 0;
+        while(n!=0) {
+            
+            //checking last bit
+            if(n&1) {
+                count++;
+            }
+            n = n>>1;
+        }
+        return count; 
+    
+}
+int main()
+{
+    int a, b, ans;
+    cout << "Enter a and b: ";
+    cin >> a >> b;
+    ans = setb(a) + setb(b);
+    cout << "Answer: " << ans << endl;
+    return 0;
+}

@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+void mn(int ar[], int s)
+{
+    int rsum = 0;
+    int sum = s*(s + 1) / 2;
+    for (int j = 0; j < s-1; j++)
+    {
+        rsum = rsum +ar[j];
+    }
+    int m = sum - rsum;
+    cout << "The missing number is-> " << m << endl;
+}
+int main()
+{
+    int arr[100], i, size;
+    cout << "Enter the size of array ";
+    cin >> size;
+    cout << "Enter array elements(integers only from 1 till size) " << endl;
+    for (i = 0; i < size-1; i++)
+    {
+        cin >> arr[i];
+    }
+
+    mn(arr, size);
+
+    return 0;
+}

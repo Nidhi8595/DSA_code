@@ -1,0 +1,62 @@
+#include<iostream>
+using namespace std;
+
+int main(){
+    int a,b,r;
+    char op;
+    cout<<"Enter two numbers: "<<endl;
+    cin>>a>>b;
+    cout<<"OPERATIONS "<<endl;
+    cout<<"Press + to ADD"<<endl;
+    cout<<"Press - to find DIFFERENCE"<<endl;
+    cout<<"Press * to find PRODUCT"<<endl;
+    cout<<"Press / to find QUOTIENT"<<endl;
+    cout<<"Press % to find REMAINDER"<<endl;
+    cout<<"Press e to exit"<<endl;
+ 
+    do{
+        cout<<"Enter your choice: "<<endl;
+        cin>>op;
+        switch(op)
+        {
+            case '+':
+            {
+                r=a+b;
+                break;
+            }
+            case '-':
+            {
+                r=a-b;
+                break;
+            }
+            case '*':
+            {
+                r=a*b;
+                break;
+            }
+            case '/':
+            {
+                r=a/b;
+                break;
+            }
+            case '%':
+            {
+                r=a%b;
+                break;
+            }
+            case 'e':
+            {
+                cout<<"------End------"<<endl;
+                break;
+            }
+            default:
+            {
+                cout<<"Invalid";
+                break;
+            }
+        }
+        cout<<"Result: "<<r<<endl;
+    }
+    while(op!='e');
+    return 0;
+}

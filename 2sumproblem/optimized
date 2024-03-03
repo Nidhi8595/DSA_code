@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+#include <algorithm>
+// optimized code
+using namespace std;
+string sum(int ar[], int s, int k)
+{
+    int i=0,j=s-1;
+    sort(ar,ar+s);
+    while(i<j)
+    {
+        int sum=ar[i]+ar[j];
+        if(sum==k)
+        {
+            return "YES";
+        }
+        else if(sum<k)
+        {
+            i++;
+        }
+        else{
+            j--;
+        }
+    }
+    return "NO";
+}
+int main()
+{
+    int n, k;
+    cout << "Enter size of array->";
+    cin >> n;
+    int arr[n];
+    cout << "Enter elements->" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the sum->" << endl;
+    cin >> k;
+    cout<<sum(arr, n, k);
+    return 0;
+}

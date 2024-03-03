@@ -1,0 +1,21 @@
+#include<iostream>
+using namespace std;
+
+int main(){
+    int sum=0;
+    int pdt=1;
+    int n,d=1;
+    cout<<"Enter the number: ";
+    cin>>n;
+    while(n)
+    {
+        d=n%10;
+        sum+=d;
+        pdt=pdt*d;
+        n/=10;
+    }
+    cout<<"Sum of digits: "<<sum<<endl;
+    cout<<"Product of digits: "<<pdt<<endl;
+    cout<<"Difference of Product and Sum: "<<pdt-sum<<endl;
+    return 0;
+}

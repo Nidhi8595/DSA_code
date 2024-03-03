@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+#include <algorithm>
+// brute force
+using namespace std;
+void sum(int ar[], int s, int k)
+{
+    for(int i=0;i<s;i++)
+    {
+        for(int j=i+1;j<s;j++) //or for(int j=0;j<s;j++)
+        {
+            if(ar[i]==ar[j])
+            {
+                continue;
+            }
+            if((ar[i]+ar[j])==k)
+            {
+                cout<<"Elements having sum "<<k<<" exist at index "<<i<<" and "<<j<<endl;
+            }
+        }
+    }
+}
+int main()
+{
+    int n, k;
+    cout << "Enter size of array->";
+    cin >> n;
+    int arr[n];
+    cout << "Enter elements->" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the sum->" << endl;
+    cin >> k;
+    sum(arr, n, k);
+    return 0;
+}

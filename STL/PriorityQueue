@@ -1,0 +1,51 @@
+// #include<iostream>
+// #include<queue>
+#include<bits/stdc++.h>
+using namespace std;
+
+void print(priority_queue<int> a)
+{
+    int n=a.size();
+    // for(int i=0;i<a.size();i++) here size decreases after each iteration due to pop()
+    for(int i=0;i<n;i++)
+    {
+        cout<<a.top()<<" ";
+        a.pop();
+    }
+    cout<<endl;
+}
+void print2(priority_queue<int,vector<int>,greater<int>> a)
+{
+    int n=a.size();
+    for(int i=0;i<n;i++)
+    {
+        cout<<a.top()<<" ";
+        a.pop();
+    }
+    cout<<endl;
+}
+int main(){
+    // max heap
+    priority_queue<int>p;
+    // min heap
+    priority_queue<int,vector<int>,greater<int>>q;
+    p.push(1);
+    p.push(2);
+    p.push(3);
+    p.push(0);
+    p.push(7);
+    // max heap thats why elements gets printed in decreasing order
+    cout<<"Elements in max heap->"<<endl;
+    print(p);
+
+    q.push(2);
+    q.push(9);
+    q.push(4);
+    q.push(0);
+    q.push(5);
+    // min heap so gets printed in increasing order
+    cout<<"Elements in min heap->"<<endl;
+    print2(q);
+
+    return 0;
+}

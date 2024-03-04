@@ -1,0 +1,15 @@
+#include<bits/stdc++.h>
+using namespace std;
+void upp(char init)
+{
+    char fin=(init -'a')+'A';
+    cout<<init<<" in uppercase -> "<<fin;
+}
+int main()
+{
+    char i;
+    cout<<"Enter a lowercase charcater ->"<<endl;
+    cin>>i;
+    upp(i);
+    return 0;
+}

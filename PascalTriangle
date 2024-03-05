@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+//  Optimized
+int nCr(int no, int co)    // generate values
+{
+    long long res = 1;
+    for (int i = 0; i < co; i++)
+    {
+        res = res * (no - i);
+        res = res / (i + 1);
+    }
+    return (int)res;
+}
+vector<int> generateRow(int r)   // generate rows
+{
+    vector<int> ansRow;
+    ansRow.push_back(1);
+    for (int c = 2; c <= r; c++)
+    {
+        ansRow.push_back(nCr(r - 1, c - 1));
+    }
+    return ansRow;
+}
+vector<vector<int>> pascalTriangle(int n) // the entire triangle
+{
+    vector<vector<int>> ans;
+    vector<int> firstRow = {1};    // 1st row
+    ans.push_back(firstRow);
+    for (int row = 2; row <= n; row++)
+    {
+        ans.push_back(generateRow(row));
+    }
+    return ans;
+}
+int main()
+{
+    int n;
+    cout<<"Enter the number of rows in triangle -> "<<endl;
+    cin>>n;
+    vector<vector<int>> answer = pascalTriangle(n);
+    for (int p = 0; p < n; p++)
+    {
+        for (int q = 0; q <= p; q++)
+        {
+            cout << answer[p][q] << " ";
+        }
+        cout << "\n";
+    }
+    return 0;
+}

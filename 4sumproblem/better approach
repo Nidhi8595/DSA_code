@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+//  better approach
+void fourSum(int n, int nums[], int target)
+{
+    set<vector<int>> st;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            set<long long> hashset;
+            for (int k = j + 1; k < n; k++)
+            {
+                long long fourth = -(nums[i] + nums[k] + nums[j]) + target;
+                if (hashset.find(fourth) != hashset.end())
+                {
+                    vector<int> temp = {nums[i], nums[j], nums[k], (int)(fourth)};
+                    sort(temp.begin(), temp.end());
+                    st.insert(temp);
+                }
+                hashset.insert(nums[k]);
+            }
+        }
+    }
+    for (auto i : st)
+    {
+        cout << "[";
+        for (auto j : i)
+        {
+            cout << j << " ";
+        }
+        cout << "] ";
+    }
+}
+int main()
+{
+    int n, t;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the target -> ";
+    cin >> t;
+    fourSum(n, arr, t);
+    return 0;
+}

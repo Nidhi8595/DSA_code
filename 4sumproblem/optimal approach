@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+using namespace std;
+//  two pointer approach
+void fourSum(int n, int arr[], int target)
+{
+    sort(arr, arr + n);
+    for (int i = 0; i < n; i++)
+    {
+        if (i > 0 && arr[i] == arr[i - 1])
+        {
+            continue;
+        }
+        for (int j = i + 1; j < n; j++)
+        {
+            if (j > i + 1 && arr[j] == arr[j - 1])
+            {
+                continue;
+            }
+            int k = j + 1;
+            int l = n - 1;
+            while (k < l)
+            {
+                long long sum = arr[i] + arr[j] + arr[k] + arr[l];
+                if (sum == target)
+                {
+                    cout << "[ " << arr[i] << " " << arr[j] << " " << arr[k] << " " << arr[l] << " ] ";
+                    k++;
+                    l--;
+                    while (k < l && arr[k] == arr[k - 1])
+                    {
+                        k++;
+                    }
+                    while (k < l && arr[l] == arr[l + 1])
+                    {
+                        l--;
+                    }
+                }
+                else if (sum < target)
+                {
+                    k++;
+                }
+                else
+                {
+                    l--;
+                }
+            }
+        }
+    }
+}
+int main()
+{
+    int n, t;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the target -> ";
+    cin >> t;
+    fourSum(n, arr, t);
+    return 0;
+}

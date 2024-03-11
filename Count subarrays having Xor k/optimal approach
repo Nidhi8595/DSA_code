@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+// optimal approach
+int subarraysWithXorK(int n, int a[], int k)
+{
+    int xor1 = 0;
+    map<int, int> mpp;
+    mpp[xor1]++;
+    int cnt = 0;
+    for (int i = 0; i < n; i++)
+    {
+        xor1 = xor1 ^ a[i];
+        int xor2 = xor1 ^ k;
+        cnt += mpp[xor2];
+        mpp[xor1]++;
+    }
+    return cnt;
+}
+int main()
+{
+    int n, k;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int a[n];
+    cout << "Enter the elements of the array -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a[i];
+    }
+    cout << "Enter the target sum -> ";
+    cin >> k;
+    int ans = subarraysWithXorK(n, a, k);
+    cout << "The number of subarrays with XOR k is -> " << ans;
+    return 0;
+}

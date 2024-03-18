@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+// optimal approach
+int binarySearch(int arr[], int low, int high, int t)
+{
+    if (low > high)
+    {
+        return -1;
+    }
+    int mid = (low + high) / 2;
+    if (arr[mid] == t)
+    {
+        return mid;
+    }
+    else if (t > arr[mid])
+    {
+        return binarySearch(arr, mid + 1, high, t);
+    }
+    else
+    {
+        return binarySearch(arr, low, mid - 1, t);
+    }
+}
+int main()
+{
+    int n, t;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array / sorted order -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the target -> ";
+    cin >> t;
+    int ind = binarySearch(arr, 0, n - 1, t);
+    if (ind == -1)
+    {
+        cout << "The target is not present." << endl;
+    }
+    else
+    {
+        cout << t << " is present at the index -> " << ind << endl;
+    }
+    return 0;
+}

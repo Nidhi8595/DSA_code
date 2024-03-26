@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+// brute force
+int rotation(int n, int arr[])
+{
+    int ans = INT_MAX, index = -1;
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[i] < ans)
+        {
+            ans = arr[i];
+            index = i;
+        }
+    }
+    return index;
+}
+int main()
+{
+    int n;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array / sorted order / rotated -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    int ans = rotation(n, arr);
+    cout << "The array is rotated -> " << ans << " times";
+    return 0;
+}

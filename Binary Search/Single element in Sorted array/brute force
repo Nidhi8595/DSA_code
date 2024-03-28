@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+// brute force
+int single(int n, int arr[])
+{
+    if (n == 1)
+    {
+        return arr[0];
+    }
+    for (int i = 0; i < n; i++)
+    {
+        if (i == 0) // in case of first element
+        {
+            if (arr[i] != arr[i + 1])
+            {
+                return arr[i];
+            }
+        }
+        else if (i == n - 1) // in case of last element
+        {
+            if (arr[i] != arr[i - 1])
+            {
+                return arr[i];
+            }
+        }
+        else // in case of others
+        {
+            if (arr[i] != arr[i - 1] && arr[i] != arr[i + 1])
+            {
+                return arr[i];
+            }
+        }
+    }
+    return -1; // in case there's no single element present
+}
+int main()
+{
+    int n;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array / sorted order -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    int ans = single(n, arr);
+    cout << "The single element in the array is -> " << ans;
+    return 0;
+}

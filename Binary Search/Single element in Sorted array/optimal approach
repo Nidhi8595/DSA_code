@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+// optimal approach
+int single(int n, int arr[])
+{
+    if (n == 1) // singelton array
+    {
+        return arr[0];
+    }
+    if (arr[0] != arr[1]) // first element
+    {
+        return arr[0];
+    }
+    if (arr[n - 1] != arr[n - 2]) // last element
+    {
+        return arr[n - 1];
+    }
+    int low = 1, high = n - 2;
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        if (arr[mid] != arr[mid + 1] && arr[mid] != arr[mid - 1])
+        {
+            return arr[mid];
+        }
+        // for left array
+        if ((mid % 2 == 1 && arr[mid] == arr[mid - 1]) || (mid % 2 == 0 && arr[mid] == arr[mid + 1]))
+        {
+            // eliminate the left half:
+            low = mid + 1;
+        }
+        // for right array
+        else
+        {
+            // eliminate the right half:
+            high = mid - 1;
+        }
+    }
+    return -1;
+}
+int main()
+{
+    int n;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array / sorted order -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    int ans = single(n, arr);
+    cout << "The single element in the array is -> " << ans;
+    return 0;
+}

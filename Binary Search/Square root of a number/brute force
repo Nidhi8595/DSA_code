@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+// brute force
+int findsqrt(int n)
+{
+    int ans = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        if ((i * i) <= n)
+        {
+            ans = i;
+        }
+        else
+        {
+            break;
+        }
+    }
+    return ans;
+}
+int main()
+{
+    int n;
+    cout << "Enter the integer to calculate its square root -> ";
+    cin >> n;
+    int ans = findsqrt(n);
+    cout << " The square root of " << n << " is -> " << ans;
+    return 0;
+}

@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+// optimal approach
+int findsqrt(int n)
+{
+    int l = 1, h = n;
+    while (l <= h)
+    {
+        long long mid = (l + h) / 2;
+        long long ans = (mid * mid);
+        if (ans <= n)   // eliminate the left half
+        {
+            l = mid + 1;
+        }
+        else           // eliminate the right half
+        {
+            h = mid - 1;
+        }
+    }
+    return h;
+}
+int main()
+{
+    int n;
+    cout << "Enter the integer to calculate its square root -> ";
+    cin >> n;
+    int ans = findsqrt(n);
+    cout << " The square root of " << n << " is -> " << ans;
+    return 0;
+}

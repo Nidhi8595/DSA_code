@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+// brute force
+int findMax(int n, int arr[])
+{
+    int maxi = INT_MIN;
+    for (int i = 0; i < n; i++)
+    {
+        maxi = max(maxi, arr[i]);
+    }
+    return maxi;
+}
+int calculateTotalHrs(int n, int arr[], int hourly)
+{
+    int totalH = 0;
+    for (int i = 0; i < n; i++)
+    {
+        totalH += ceil((double)(arr[i]) / (double)(hourly));
+    }
+    return totalH;
+}
+int minimumRate(int n, int arr[], int h)
+{
+    int maxi = findMax(n, arr);
+    for (int i = 1; i <= maxi; i++)
+    {
+        int reqT = calculateTotalHrs(n, arr, i);
+        if (reqT <= h)
+        {
+            return i;
+        }
+    }
+    return maxi;
+}
+int main()
+{
+    int n, h;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the target -> ";
+    cin >> h;
+    int ans = minimumRate(n, arr, h);
+    cout << "Koko should eat atleast " << ans << " bananas in an hour";
+    return 0;
+}

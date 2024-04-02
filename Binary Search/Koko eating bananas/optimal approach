@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+// optimal approach
+int findMax(int n, int arr[])
+{
+    int maxi = INT_MIN;
+    for (int i = 0; i < n; i++)
+    {
+        maxi = max(maxi, arr[i]);
+    }
+    return maxi;
+}
+int calculateTotalHrs(int n, int arr[], int hourly)
+{
+    int totalH = 0;
+    for (int i = 0; i < n; i++)
+    {
+        totalH += ceil((double)(arr[i]) / (double)(hourly));
+    }
+    return totalH;
+}
+int minimumRate(int n, int arr[], int t)
+{
+    int l= 1, h = findMax(n,arr);
+    while (l <= h)
+    {
+        int mid = (l+ h) / 2;
+        int totalH = calculateTotalHrs(n,arr, mid);
+        if (totalH <= t)
+        {
+            h = mid - 1;
+        }
+        else
+        {
+            l = mid + 1;
+        }
+    }
+    return l;
+}
+int main()
+{
+    int n, t;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the target -> ";
+    cin >> t;
+    int ans = minimumRate(n, arr, t);
+    cout << "Koko should eat atleast " << ans << " bananas in an hour";
+    return 0;
+}

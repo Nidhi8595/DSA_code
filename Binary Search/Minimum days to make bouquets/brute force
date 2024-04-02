@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+// we can consider only adjacent flowers
+// brute force
+bool possible(int n, int arr[], int day, int k, int m)
+{
+    int cnt = 0;
+    int noOfB = 0;
+    // counting the no. of bouquets
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[i] <= day)
+        {
+            cnt++;
+        }
+        else
+        {
+            noOfB += (cnt / k);
+            cnt = 0;
+        }
+    }
+    noOfB += (cnt / k);
+    return noOfB >= m;
+}
+int rose(int n, int arr[], int k, int m)
+{
+    long long val = m * 1ll * k * 1ll;
+    if (val > n) // impossible since more flowers required
+    {
+        return -1;
+    }
+    int mini = INT_MAX, maxi = INT_MIN;
+    for (int i = 0; i < n; i++)
+    {
+        mini = min(mini, arr[i]);
+        maxi = max(maxi, arr[i]);
+    }
+    for (int i = mini; i <= maxi; i++)
+    {
+        if (possible(n, arr, i, k, m))
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+int main()
+{
+    int n, k, m;
+    cout << "Enter the number of flowers -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the number of day at which respective flower bloom -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the no. of flowers per bouquet -> ";
+    cin >> k;
+    cout << "Enter the number of bouquets to be formed -> ";
+    cin >> m;
+    int ans = rose(n, arr, k, m);
+    if (ans == -1)
+    {
+        cout << "We cannot make m bouquets";
+    }
+    else
+    {
+        cout << "We can make " << m << " bouquets on day -> " << ans;
+    }
+    return 0;
+}

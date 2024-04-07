@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+// optimal approach
+bool canWePlace(int n, /* vector<int> &arr */ int arr[], int dist, int cows)
+{
+    int cntCows = 1;   // no. of cows
+    int last = arr[0]; // position of last cow.
+    for (int i = 1; i < n; i++)
+    {
+        if (arr[i] - last >= dist)
+        {
+            cntCows++;     // increasing count
+            last = arr[i]; // update the last location.
+        }
+        if (cntCows >= cows)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+int aggressiveCows(int n, /* vector<int> & arr */ int arr[], int k)
+{
+    // sort(arr.begin(), arr.end());
+    sort(arr, arr + n);
+    int l = 1, h = arr[n - 1] - arr[0];
+    while (l <= h)
+    {
+        int mid = (l + h) / 2;
+        if (canWePlace(n, arr, mid, k) == true)
+        {
+            l = mid + 1;
+        }
+        else
+        {
+            h = mid - 1;
+        }
+    }
+    return h;
+}
+int main()
+{
+    // vector<int> arr = {0, 3, 4, 7, 10, 9};
+    // int k = 4;
+    int n, k;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the target -> ";
+    cin >> k;
+    int ans = aggressiveCows(n, arr, k);
+    cout << "The maximum possible minimum distance is -> " << ans;
+    return 0;
+}

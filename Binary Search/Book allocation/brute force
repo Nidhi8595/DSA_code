@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+// brute force
+int Students(int n, int arr[], int p)
+{
+    int s = 1;
+    long long pagesfors = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (pagesfors + arr[i] <= p)
+        {
+            pagesfors += arr[i];
+        }
+        else
+        {
+            s++;
+            pagesfors = arr[i];
+        }
+    }
+    return s;
+}
+int Pages(int n, int arr[], int m)
+{
+    if (m > n)
+    {
+        return -1;
+    }
+    int *low = max_element(arr, arr + n);
+    int l = *low;
+    int h = accumulate(arr, arr + n, 0);
+    for (int p = l; p <= h; p++)
+    {
+        if (Students(n, arr, p) == m)
+        {
+            return p;
+        }
+    }
+    return l;
+}
+int main()
+{
+    int n, m;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the no. of students -> ";
+    cin >> m;
+    int ans = Pages(n, arr, m);
+    cout << "The answer is -> " << ans;
+    return 0;
+}

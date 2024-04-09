@@ -1,0 +1,55 @@
+// NOTE -> you can take only adjacent elements since subarray is contiguous part of array
+#include <bits/stdc++.h>
+using namespace std;
+// brute force
+int splits(int n, int arr[], int maxS)
+{
+    int split = 1;           // originally there's one array
+    long long subarrSum = 0; // intializing sum
+    for (int i = 0; i < n; i++)
+    {
+        if (subarrSum + arr[i] <= maxS)
+        {
+            // insert current element to current subarray
+            subarrSum += arr[i];
+        }
+        else
+        {
+            // to next subarray
+            split++;
+            subarrSum = arr[i];
+        }
+    }
+    return split;
+}
+int lSubarrSumMin(int n, int arr[], int m)
+{
+    int *low = max_element(arr, arr + n);
+    int l = *low;                         // maximum in array
+    int h = accumulate(arr, arr + n, 0);  // sum of array
+    for (int maxS = l; maxS <= h; maxS++) // range-> max ---sum
+    {
+        if (splits(n, arr, maxS) == m) // no. of subarrays made
+        {
+            return maxS;
+        }
+    }
+    return l;
+}
+int main()
+{
+    int n, m;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the no. of subarrays -> ";
+    cin >> m;
+    int ans = lSubarrSumMin(n, arr, m);
+    cout << "The minimized largest sum of a subarry is -> " << ans;
+    return 0;
+}

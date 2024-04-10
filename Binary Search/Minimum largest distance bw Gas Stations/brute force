@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+// brute force
+long double minMaxDist(int n, int arr[] /* vector<int> &arr */, int k)
+{
+    vector<int> placed(n - 1, 0);
+    for (int g = 1; g <= k; g++)
+    {
+        // insert in the max section
+        long double maxS = -1; // initialized values
+        int maxIndex = -1;
+        for (int i = 0; i < n - 1; i++)
+        {
+            long double d = arr[i + 1] - arr[i];
+            long double SL = d / (long double)(placed[i] + 1);
+            if (SL > maxS)
+            {
+                // update to larger one
+                maxS = SL;
+                maxIndex = i; // index of this section
+            }
+        }
+        placed[maxIndex]++; // no. of placed G.S. updated
+    }
+    long double ans = -1; // default value
+    for (int i = 0; i < n - 1; i++)
+    {
+        long double d = arr[i + 1] - arr[i];
+        long double SL = d / (long double)(placed[i] + 1);
+        ans = max(ans, SL); // update to larger
+    }
+    return ans;
+}
+int main()
+{
+    int n, k;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n]; /* vector<int> arr; */
+    cout << "Enter the elements of the array/Sorted order -> ";
+    for (int i = 0; i < n; i++)
+    {
+        // int t;
+        cin >> arr[i]; /* cin>>t; */
+        // arr.push_back(t);
+    }
+    cout << "Enter the target -> ";
+    cin >> k;
+    long double ans = minMaxDist(n, arr, k);
+    cout << "The minimized possible maximum distance is -> " << ans;
+    return 0;
+}

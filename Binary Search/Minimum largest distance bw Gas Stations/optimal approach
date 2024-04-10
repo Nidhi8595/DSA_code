@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+using namespace std;
+// optimal approach
+int Required(int n, int arr[] /* vector<int> &arr */, long double distance)
+{
+    int count = 0;
+    for (int i = 1; i < n; i++)
+    {
+        int GS = ((arr[i] - arr[i - 1]) / distance);
+        if ((arr[i] - arr[i - 1]) == (distance * GS))
+        {
+            GS--;
+        }
+        count += GS; // count updated
+    }
+    return count;
+}
+long double minMaxDist(int n, int arr[] /* vector<int> &arr */, int k)
+{
+    vector<int> placed(n - 1, 0);
+    long double l = 0; // default
+    long double h = 0;
+    for (int i = 0; i < n - 1; i++)
+    {
+        h = max(h, (long double)(arr[i + 1] - arr[i])); // place high to maximum distance
+    }
+    long double d = 1e-6; // default
+    while (h - l > d)
+    {
+        long double mid = (l + h) / (2.0);
+        int count = Required(n, arr, mid);
+        if (count > k)
+        {            // exceeded given stations
+            l = mid; // eliminate left half
+        }
+        else
+        {
+            h = mid; // eliminate right half
+        }
+    }
+    return h;
+}
+int main()
+{
+    int n, k;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n]; /* vector<int> arr; */
+    cout << "Enter the elements of the array/Sorted order -> ";
+    for (int i = 0; i < n; i++)
+    {
+        // int t;
+        cin >> arr[i]; /* cin>>t; */
+        // arr.push_back(t);
+    }
+    cout << "Enter the target -> ";
+    cin >> k;
+    long double ans = minMaxDist(n, arr, k);
+    cout << "The minimized possible maximum distance is -> " << ans;
+    return 0;
+}

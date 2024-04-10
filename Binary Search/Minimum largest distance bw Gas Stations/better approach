@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+// better approach
+long double minMaxDist(int n, int arr[] /* vector<int> &arr */, int k)
+{
+    vector<int> placed(n - 1, 0);
+    priority_queue<pair<long double /* distance */, int /* index */>> pq;
+    for (int i = 0; i < n - 1; i++)
+    {
+        pq.push({arr[i + 1] - arr[i], i}); // inserting elements to priority queue
+    }
+    for (int g = 1; g <= k; g++)
+    {
+        auto tp = pq.top();    // since in the queue, the largest section will be stored on top
+        pq.pop();              // now remove it from queue since its partitions will be now added instead
+        int Index = tp.second; // since its index isstored in second element of pair of the queue
+        placed[Index]++;       // placed
+        long double initiald = arr[Index + 1] - arr[Index];
+        long double SL = initiald / (long double)(placed[Index] + 1);
+        pq.push({SL, Index});
+    }
+    return pq.top().first; // the first element in the topmost i.e. largest distance pair
+}
+int main()
+{
+    int n, k;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n]; /* vector<int> arr; */
+    cout << "Enter the elements of the array/Sorted order -> ";
+    for (int i = 0; i < n; i++)
+    {
+        // int t;
+        cin >> arr[i]; /* cin>>t; */
+        // arr.push_back(t);
+    }
+    cout << "Enter the target -> ";
+    cin >> k;
+    long double ans = minMaxDist(n, arr, k);
+    cout << "The minimized possible maximum distance is -> " << ans;
+    return 0;
+}

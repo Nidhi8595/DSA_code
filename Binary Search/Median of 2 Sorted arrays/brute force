@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+using namespace std;
+// brute force
+double median(int n1, int arr1[] /* vector<int> &arr1 */, int n2, int arr2[] /* vector<int> &arr2 */)
+{
+    vector<int> arr3; // to store merged arrays
+    int i = 0, j = 0;
+    while (i < n1 && j < n2)
+    {
+        if (arr1[i] < arr2[j])
+        {
+            arr3.push_back(arr1[i++]);
+        }
+        else
+        {
+            arr3.push_back(arr2[j++]);
+        }
+    }
+    while (i < n1) // for remaining elements in arr1
+    {
+        arr3.push_back(arr1[i++]);
+    }
+    while (j < n2) // for remaining elements in arr2
+    {
+        arr3.push_back(arr2[j++]);
+    }
+    int n = n1 + n2; // size of final array
+    if (n % 2 == 1)  // odd
+    {
+        return (double)arr3[n / 2];
+    }
+    // even
+    double m = ((double)arr3[n / 2] + (double)arr3[(n / 2) - 1]) / 2.0;
+    return m;
+}
+int main()
+{
+    int n1, n2;
+    cout << "Enter the size of 1st array -> ";
+    cin >> n1;
+    int arr1[n1]; /* vector<int> arr1; */
+    cout << "Enter the elements of the array/ Sorted order -> ";
+    for (int i = 0; i < n1; i++)
+    {
+        // int t;
+        cin >> arr1[i]; /* cin >> t; */
+        // arr1.push_back(t);
+    }
+    cout << "Enter the size of 2nd array -> ";
+    cin >> n2;
+    int arr2[n2]; /* vector<int> arr2; */
+    cout << "Enter the elements of the array/ Sorted order -> ";
+    for (int i = 0; i < n2; i++)
+    {
+        // int t;
+        cin >> arr2[i]; /* cin >> t; */
+        // arr2.push_back(t);
+    }
+    cout << "The median of given arrays is -> " << fixed << setprecision(1) << median(n1, arr1, n2, arr2);
+    return 0;
+}

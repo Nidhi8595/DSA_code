@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+using namespace std;
+// optimal approach
+
+int lowerBound(vector<int> arr, int m, int x)
+{
+    int l = 0, h = m - 1;
+    int ans = m;
+    while (l <= h)
+    {
+        int mid = (l + h) / 2;
+        if (arr[mid] >= x)
+        {
+            ans = mid;
+            h = mid - 1; // eliminate right half
+        }
+        else
+        {
+            l = mid + 1; // eliminate left half
+        }
+    }
+    return ans;
+}
+
+int Max1(int n, int m, vector<vector<int>> &arr)
+{
+    int maxRow = 0; // initialized value
+    int index = -1;
+    for (int i = 0; i < n; i++)
+    {
+        int sum = m - lowerBound(arr[i], m, 1);
+        if (sum > maxRow)
+        {
+            maxRow = sum;
+            index = i;
+        }
+    }
+    int ans = index + 1;
+    return ans; // required row
+}
+int main()
+{
+    int n, m;
+    cout << "Enter number of rows and columns(n, m) -> ";
+    cin >> n >> m;
+    vector<vector<int>> arr;
+    cout << "Enter elements -> " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        vector<int> temp;
+        for (int j = 0; j < m; j++)
+        {
+            int val;
+            cin >> val;
+            temp.push_back(val);
+        }
+        arr.push_back(temp);
+    }
+    cout << Max1(m, n, arr) << "th row is having max 1's ";
+    return 0;
+}

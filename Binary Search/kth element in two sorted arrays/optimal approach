@@ -1,0 +1,67 @@
+#include <iostream>
+using namespace std;
+// optimal approach
+
+int kth(int n1, int arr1[] /* vector<int> &arr1 */, int n2, int arr2[] /* vector<int> &arr2 */, int k)
+{
+    int i = 0, j = 0, count = 0, ans = 0;
+    while (i < n1 && j < n2)
+    {
+        if (count == k)
+        {
+            break;
+        }
+        else if (arr1[i] < arr2[j])
+        {
+            ans = arr1[i];
+            i++;
+        }
+        else
+        {
+            ans = arr2[j];
+            j++;
+        }
+        count++;
+    }
+    if (count != k)
+    {
+        if (i != n1 - 1)
+        {
+            ans = arr1[k - count];
+        }
+        else
+        {
+            ans = arr2[k - count];
+        }
+    }
+    return ans;
+}
+
+int main()
+{
+    int n1, n2, k;
+    cout << "Enter the size of 1st array -> ";
+    cin >> n1;
+    int arr1[n1]; /* vector<int> arr1; */
+    cout << "Enter the elements of the array/ Sorted order -> ";
+    for (int i = 0; i < n1; i++)
+    {
+        // int t;
+        cin >> arr1[i]; /* cin >> t; */
+        // arr1.push_back(t);
+    }
+    cout << "Enter the size of 2nd array -> ";
+    cin >> n2;
+    int arr2[n2]; /* vector<int> arr2; */
+    cout << "Enter the elements of the array/ Sorted order -> ";
+    for (int i = 0; i < n2; i++)
+    {
+        // int t;
+        cin >> arr2[i]; /* cin >> t; */
+        // arr2.push_back(t);
+    }
+    cout << "Enter the position -> ";
+    cin >> k;
+    cout << "The element at the " << k << "th position in the merged array is -> " << kth(n1, arr1, n2, arr2, k);
+    return 0;
+}

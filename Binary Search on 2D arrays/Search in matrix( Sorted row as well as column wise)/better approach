@@ -1,0 +1,83 @@
+#include <bits/stdc++.h>
+using namespace std;
+// better approach
+
+// NOTE:- The elements are in increasing order both row and column wise
+// The last element in the current might not be exactly less than
+// the first element in the next row
+
+// Hence we are starting to traverse from the uppermost right cell
+// since from that element the row will be in decreasing order 
+// and column will be in increasing order
+// & we will be able to apply binary search easily
+
+// We can also start from the lowermost left cell 
+
+bool searchinrow(int m, vector<int> &row, int t)
+{
+    int l = 0, h = m - 1;
+    while (l <= h)
+    {
+        int mid = (l + h) / 2;
+        if (row[mid] == t)
+        {
+            return true;
+        }
+        else if (t > row[mid])
+        {
+            l = mid + 1;
+        }
+        else
+        {
+            h = mid - 1;
+        }
+    }
+    return false;
+}
+
+bool search(vector<vector<int>> &arr, int n, int m, int t)
+{
+    for (int i = 0; i < n; i++)
+    { 
+        bool result = searchinrow(int m, arr[i], t);
+        if (result) // here since the first element in the current row 
+        // might not certainly be greater than the last element in the last one,
+        // hence we can't assume that if the element is not present in the current row,
+        // then it will also not be present in further rows, 
+        // thats why we can't break out of this loop until we confirm each row
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+int main()
+{
+    int n, m, t;
+    cout << "Enter number of rows and columns(n, m) -> ";
+    cin >> n >> m;
+    vector<vector<int>> arr;
+    cout << "Enter elements / increasing order -> " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        vector<int> temp;
+        for (int j = 0; j < m; j++)
+        {
+            int val;
+            cin >> val;
+            temp.push_back(val);
+        }
+        arr.push_back(temp);
+    }
+    cout << "Enter the target -> ";
+    cin >> t;
+    if (search(arr, n, m, t))
+    {
+        cout << "Element exists in matrix";
+    }
+    else
+    {
+        cout << "Doesn't exists in matrix";
+    }
+}

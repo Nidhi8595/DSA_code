@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+// brute force
+
+// NOTE:- The elements are in increasing order both row and column wise
+// The last element in the current might not be exactly less than
+// the first element in the next row
+
+// Hence we are starting to traverse from the uppermost right cell
+// since from that element the row will be in decreasing order 
+// and column will be in increasing order
+// & we will be able to apply binary search easily
+
+// We can also start from the lowermost left cell 
+
+bool search(vector<vector<int>> &arr, int n, int m, int t)
+{
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (arr[i][j] == t)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main()
+{
+    int n, m, t;
+    cout << "Enter number of rows and columns(n, m) -> ";
+    cin >> n >> m;
+    vector<vector<int>> arr;
+    cout << "Enter elements / increasing order -> " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        vector<int> temp;
+        for (int j = 0; j < m; j++)
+        {
+            int val;
+            cin >> val;
+            temp.push_back(val);
+        }
+        arr.push_back(temp);
+    }
+    cout << "Enter the target -> ";
+    cin >> t;
+    if (search(arr, n, m, t))
+    {
+        cout << "Element exists in matrix";
+    }
+    else
+    {
+        cout << "Doesn't exists in matrix";
+    }
+}

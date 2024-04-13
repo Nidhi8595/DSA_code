@@ -1,0 +1,69 @@
+#include <bits/stdc++.h>
+using namespace std;
+// better approach
+
+/* NOTE:- The elements are in increasing order from the first element in initial row to the last element in the final row */
+
+bool searchinrow(int m, vector<int> &row, int t)
+{
+    int l = 0, h = m - 1;
+    while (l <= h)
+    {
+        int mid = (l + h) / 2;
+        if (row[mid] == t)
+        {
+            return true;
+        }
+        else if (t > row[mid])
+        {
+            l = mid + 1;
+        }
+        else
+        {
+            h = mid - 1;
+        }
+    }
+    return false;
+}
+
+bool search(vector<vector<int>> &arr, int n, int m, int t)
+{
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[i][0] <= t && t <= arr[i][m - 1])
+        {
+            return searchinrow(m, arr[i], t);
+        }
+    }
+    return false;
+}
+
+int main()
+{
+    int n, m, t;
+    cout << "Enter number of rows and columns(n, m) -> ";
+    cin >> n >> m;
+    vector<vector<int>> arr;
+    cout << "Enter elements / increasing order -> " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        vector<int> temp;
+        for (int j = 0; j < m; j++)
+        {
+            int val;
+            cin >> val;
+            temp.push_back(val);
+        }
+        arr.push_back(temp);
+    }
+    cout << "Enter the target -> ";
+    cin >> t;
+    if (search(arr, n, m, t))
+    {
+        cout << "Element exists in matrix";
+    }
+    else
+    {
+        cout << "Doesn't exists in matrix";
+    }
+}

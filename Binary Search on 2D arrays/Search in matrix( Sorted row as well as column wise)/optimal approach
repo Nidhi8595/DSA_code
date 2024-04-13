@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+// optimal approach
+
+// NOTE:- The elements are in increasing order both row and column wise
+// The last element in the current might not be exactly less than
+// the first element in the next row
+
+// Hence we are starting to traverse from the uppermost right cell
+// since from that element the row will be in decreasing order 
+// and column will be in increasing order
+// & we will be able to apply binary search easily
+
+// We can also start from the lowermost left cell 
+
+void search(vector<vector<int>> &arr, int n, int m, int t)
+{
+    int row = 0, col = m - 1;
+    while (row < n && col >= 0)
+    {
+        if (arr[row][col] == t)
+        {
+            cout << t << " is present at row -> " << row << " & column -> " << col;
+            break;
+        }
+        else if (arr[row][col] < t)
+        {
+            row++;
+        }
+        else
+        {
+            col--;
+        }
+    }
+}
+
+int main()
+{
+    int n, m, t;
+    cout << "Enter number of rows and columns(n, m) -> ";
+    cin >> n >> m;
+    vector<vector<int>> arr;
+    cout << "Enter elements / increasing order -> " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        vector<int> temp;
+        for (int j = 0; j < m; j++)
+        {
+            int val;
+            cin >> val;
+            temp.push_back(val);
+        }
+        arr.push_back(temp);
+    }
+    cout << "Enter the target -> ";
+    cin >> t;
+    search(arr, n, m, t);
+    return 0;
+}

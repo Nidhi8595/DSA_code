@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// brute force approach
+// T.C. ->O(N)
+// S.C. ->O(N)  for result
+
+string outermost(string s)
+{
+    int opening_paranthesis = 0;
+    string result = ""; // empty
+    for (char c : s)    // traversing string
+    {
+        if (c == '(')
+        {
+            opening_paranthesis++;
+            if (opening_paranthesis > 1)
+            {
+                result += c;
+            }
+        }
+        else if (c == ')')
+        {
+            opening_paranthesis--;
+            if (opening_paranthesis > 0)
+            {
+                result += c;
+            }
+        }
+        else
+        {
+            result += c;
+        }
+    }
+    return result;
+}
+int main()
+{
+    string s;
+    cout << "Enter a string -> ";
+    cin >> s;
+    cout << outermost(s);
+    return 0;
+}

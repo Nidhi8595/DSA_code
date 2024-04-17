@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// optimal approach
+// T.C. -> O(N)
+// S.C. -> O(1)
+
+void reversestr(string &s) // since  we are making changes in the original string
+{
+    int n = s.length();
+    int i = 0, j = n - 1;
+    while ((i < n / 2) && (j >= n / 2))
+    {
+        swap(s[i], s[j]);
+        i++;
+        j--;
+    }
+}
+
+int main()
+{
+    string s;
+    cout << "Enter a string -> ";
+    cin >> s;
+    reversestr(s);
+    cout << "After reversing -> ";
+    cout << s;
+    return 0;
+}

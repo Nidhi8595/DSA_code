@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// optimal approach
+// T.C. -> O(N)
+// S.C. -> O(1)
+
+// i pointer points to left half of string while j points to right half of string
+
+// in case of odd length, i will simply traverse from index 0 to (half of length - 1) index and j will simply traverse from index n-1 to ( half of length +  1),   since only till then both conditions will be true
+
+// in case of even length, i will traverse in the same manner but j will traverse from n-1 till ( half the length)
+
+void reversestr(string &s) // since  we are making changes in the original string that's why reference
+{
+    int n = s.length();
+    int i = 0, j = n - 1;
+    while ((i < n / 2) && (j >= n / 2))
+    {
+        swap(s[i], s[j]);
+        i++;
+        j--;
+    }
+}
+
+int main()
+{
+    string s;
+    cout << "Enter a string -> ";
+    cin >> s;
+    string original = s;
+    reversestr(s);
+    if (original == s)
+    {
+        cout << "Palindrome";
+    }
+    else
+    {
+        cout << "Not a Palindrome";
+    }
+    return 0;
+}

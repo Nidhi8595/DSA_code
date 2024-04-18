@@ -1,0 +1,69 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// We are given an array of strings, we need to find till which index the elements of each strings are same and return that substring
+// Firstly , we will sort the given array
+// After that, we need to find the string having minimum length since the common prefix can never be longer than that length
+// Now, since the array is already sorted, we need to compare elements of only first and last string since every string bw them will also have same elements till the place for which the elements of last string are same as the elements of the first string
+
+// matching word by word
+// T.C. -> O( N * log N) + O(Minimum length string)
+
+int findMinLength(string arr[], int n)
+{
+    int min = arr[0].length();
+
+    for (int i = 1; i < n; i++)
+        if (arr[i].length() < min)
+        {
+            min = arr[i].length();
+        }
+
+    return (min);
+}
+
+string longestCommonPrefix(string arr[], int n)
+{
+
+    // Edge cases:-
+    if (n == 0) // empty array
+    {
+        return "";
+    }
+
+    if (n == 1) // array has only one string, no need to compare
+    {
+        return arr[0];
+    }
+
+    sort(arr, arr + n);
+
+    int minlength = findMinLength(arr, n);
+
+    string f = arr[0];     // first string
+    string l = arr[n - 1]; // last string
+    int i = 0;
+    while (i < minlength && f[i] == l[i])
+    {
+        i++;
+    }
+    string ans = f.substr(0, i); // l.substr(0,i);
+    return ans;
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    string arr[n];
+    string s;
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Enter " << i + 1 << "th string -> ";
+        cin >> s;
+        arr[i] = s;
+    }
+    cout << "The longest common prefix is -> " << longestCommonPrefix(arr, n);
+    return 0;
+}

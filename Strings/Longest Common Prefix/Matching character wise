@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// In this approach, we check for a current character in each string
+
+// matching character by character
+// T.C. -> O(N * Min)
+
+int findMinLength(string arr[], int n)
+{
+    int min = arr[0].length();
+
+    for (int i = 1; i < n; i++)
+        if (arr[i].length() < min)
+        {
+            min = arr[i].length();
+        }
+
+    return (min);
+}
+
+string longestCommonPrefix(string arr[], int n)
+{
+
+    // Edge cases:-
+    if (n == 0) // empty array
+    {
+        return "";
+    }
+
+    if (n == 1) // array has only one string, no need to compare
+    {
+        return arr[0];
+    }
+
+    int minlength = findMinLength(arr, n);
+    string ans;
+    char current;
+    for (int i = 0; i < minlength; i++)
+    {
+        current = arr[0][i];
+
+        for (int j = 1; j < n; j++)
+        {
+            if (arr[j][i] != current)
+            {
+                return ans;
+            }
+        }
+
+        ans.push_back(current);
+    }
+    return (ans);
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    string arr[n];
+    string s;
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Enter " << i + 1 << "th string -> ";
+        cin >> s;
+        arr[i] = s;
+    }
+    cout << "The longest common prefix is -> " << longestCommonPrefix(arr, n);
+    return 0;
+}

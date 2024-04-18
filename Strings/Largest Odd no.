@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// T.C. -> O(N)
+
+// we are starting to traverse the string from the end since we have to find the largest odd number and  any number that contains an odd number at end, is also odd and substr() will print the substring from 0 to i ( which means the number at i index is odd and hence the string from 0 to i will also be odd )
+
+string maxOddno(string s)
+{
+    int n = s.length();
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (s[i] % 2 != 0)
+        {
+            string s1 = s.substr(0, i + 1);
+            return s1;
+        }
+    }
+    return ""; // in case there's no odd number in the entire string
+}
+int main()
+{
+    string s;
+    cout << "Enter a string -> ";
+    cin >> s;
+    cout << maxOddno(s);
+    return 0;
+}

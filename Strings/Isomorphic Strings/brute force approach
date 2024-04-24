@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX_CHARS 256
+
+// Isomorphic strings are mapped exactly according to the characters and the number of times they are repeated
+// abb and pqq are isomorphic srings while abb and pqr are not
+// brute force approach
+// T.C. -> O(N^2)
+
+bool iso(string s1, string s2)
+{
+
+    int l1 = s1.length(), l2 = s2.length();
+    if (l1 != l2) // length is not equal
+    {
+        return false;
+    }
+    bool marked[MAX_CHARS] = {false};
+    int map[MAX_CHARS];
+    memset(map, -1, sizeof(map));
+    for (int i = 0; i < l1; i++)
+    {
+        if (map[s1[i]] == -1)
+        {
+            // already mapped
+            if (marked[s2[i]] == true)
+            {
+                return false;
+            }
+            // Mark as visited
+            marked[s2[i]] = true;
+            map[s1[i]] = s2[i];
+        }
+        else if (map[s1[i]] != s2[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main()
+{
+    string s1, s2;
+    cout << "Enter first string -> ";
+    cin >> s1;
+    cout << "Enter second string -> ";
+    cin >> s2;
+    if (iso(s1, s2))
+    {
+        cout << s1 << " and " << s2 << " are Isomorphic to each other";
+    }
+    else
+    {
+        cout << "Not Isomorphic";
+    }
+    return 0;
+}

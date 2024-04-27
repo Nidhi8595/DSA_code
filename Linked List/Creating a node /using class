@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+class Node
+{
+public:
+    int data;   // to store value
+    Node *next; /* since we will store the address of next node
+    thats why we are declaring a pointer of datatype "Node" */
+public:
+    /* now we will define constructor to create objects of
+    datatype "Node" */
+    Node(int data1, Node *next1)
+    {
+        data = data1;
+        next = next1;
+    }
+};
+
+int main()
+{
+    int n;
+    cout << "Enter the no. of elements -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    // 1st method
+    // Node x = Node(arr[0], nullptr);
+    // Node *y = &x;
+    // cout << y <<endl;    // to display address of current node
+    // cout << x.data << endl; // to display data
+    // cout << x.next << endl; // to display address stored
+
+    // 2nd method
+    Node *y = new Node(arr[0], nullptr); /* creating a pointer for a
+     new "Node" type object */
+    cout << y << endl;                   // to display current node address
+    cout << y->data << endl;             // to display data
+    cout << y->next << endl;             // to display address stored
+}

@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+public:
+    int data;   // to store value
+    Node *next; /* since we will store the address of next node
+    thats why we are declaring a pointer of datatype "Node" */
+public:
+    /* now we will define constructor to create objects of
+    datatype "Node" */
+    Node(int data1, Node *next1)
+    {
+        data = data1;
+        next = next1;
+    }
+    Node(int data1) // second constructor
+    {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+Node *convert(int n, int arr[])
+{
+    Node *head = new Node(arr[0]); // creting first node
+    Node *move = head;             // initially will point to head pointer
+    for (int i = 1; i < n; i++)
+    {
+        Node *temp = new Node(arr[i]); // creating other nodes
+        move->next = temp;             // now move points to new temporary node we have created
+        move = temp;                   // or move=move->next;// now move pointer moves to next node
+    }
+    return head; // returning the address of first node of Linked list we have created
+}
+
+int length(Node *head)
+{
+    int cnt = 0;
+    Node *temp = head;
+    while (temp)
+    {
+        temp = temp->next;
+        cnt++;
+    }
+    return cnt; // i.e. number of nodes traversed
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the no. of elements -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    Node *head = convert(n, arr);
+    cout << "The elements in the Linked List are -> ";
+    Node *temp = head; // we are using temp pointer to traverse since we can't traverse using head as it is the starting address
+    while (temp)       // i.e. till last node is reached since then temp will point to NULL
+    {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+    cout << "The given Linked List contains " << length(head) << " elements" << endl;
+}

@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// deleting the Node at a given position in a Doubly Linked List
+// deleting the Node having given value in a Doubly Linked List
 
 class Node
 {

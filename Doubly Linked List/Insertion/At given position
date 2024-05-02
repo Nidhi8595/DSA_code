@@ -1,0 +1,107 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Inserting a Node at the given position in a Doubly Linked List
+
+class Node
+{
+public:
+    int data;   // to store value
+    Node *next; /* since we will store the address of next node
+    thats why we are declaring a pointer of datatype "Node" */
+    Node *back; // to store pointer of previous node
+public:
+    /* now we will define constructor to create objects of
+    datatype "Node" */
+    Node(int data1, Node *next1, Node *back1)
+    {
+        data = data1;
+        next = next1;
+        back = back1;
+    }
+
+    Node(int data1) // second constructor
+    {
+        data = data1;
+        next = nullptr;
+        back = nullptr;
+    }
+};
+
+Node *convert(int n, int arr[])
+{
+    Node *head = new Node(arr[0]); // creating first node
+    Node *prev = head;             // initially will point to head pointer
+    for (int i = 1; i < n; i++)
+    {
+        Node *temp = new Node(arr[i], nullptr, prev); // creating other nodes
+        prev->next = temp;
+        prev = temp;
+    }
+    return head; /* returning the address of first
+    node of Doubly Linked list we have created */
+}
+
+void print(Node *temp)
+{
+    cout << "The elements in the Doubly Linked List are -> ";
+    while (temp != NULL)
+    {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+Node *insertPos(Node *head, int val, int k)
+{
+    if (head == nullptr)
+    {
+        return new Node(val);
+    }
+    int cnt = 0;
+    Node *temp = head; // for traversing
+    while (temp != nullptr)
+    {
+        cnt++;
+        if (cnt == k - 1)
+        {
+            Node *newNode = new Node(val, temp->next, temp);
+
+            temp->next->back = newNode;
+            temp->next = newNode;
+
+            /* now the new created node is attached
+            bw temp and previous temp->next */
+            return head;
+        }
+        temp = temp->next;
+    }
+
+    return head; // updated Doubly Linked List
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the no. of elements -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    Node *head = convert(n, arr); // address of Linked List
+
+    print(head);
+    int val, k;
+    cout << "Enter the value you want to insert -> ";
+    cin >> val;
+    cout << "Enter the Position at which to be inserted -> ";
+    cin >> k;
+    head = insertPos(head, val, k);
+    cout << "After inserting " << val << " at " << k << "th Node -> " << endl;
+    print(head);
+    return 0;
+}

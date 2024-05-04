@@ -1,0 +1,92 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Reverse a given Linked List
+// Recursive approach
+
+// T.C. -> O(N)
+// S.C. -> O(1)
+
+class Node
+{
+public:
+    int data;   // to store value
+    Node *next; /* since we will store the address of next node
+    thats why we are declaring a pointer of datatype "Node" */
+public:
+    /* now we will define constructor to create objects of
+    datatype "Node" */
+    Node(int data1, Node *next1)
+    {
+        data = data1;
+        next = next1;
+    }
+    Node(int data1) // second constructor
+    {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+Node *convert(int n, int arr[])
+{
+    Node *head = new Node(arr[0]); // creting first node
+    Node *move = head;             // initially will point to head pointer
+    for (int i = 1; i < n; i++)
+    {
+        Node *temp = new Node(arr[i]); // creating other nodes
+        move->next = temp;             // now move points to new temporary node we have created
+        move = temp;                   // or move=move->next;// now move pointer moves to next node
+    }
+    return head; // returning the address of first node of Linked list we have created
+}
+
+void print(Node *temp)
+{
+    cout << "The elements in the Linked List are -> ";
+    while (temp != NULL)
+    {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+Node *reverseLL(Node *head)
+{
+    if (head == nullptr || head->next == nullptr)
+    { // empty or single element
+        return head;
+    }
+
+    Node *newNode = reverseLL(head->next);
+
+    Node *front = head->next;
+    front->next = head; // reverse
+
+    head->next = nullptr;
+
+    return newNode; // updated Linked List
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the no. of elements -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    Node *head = convert(n, arr);
+
+    print(head);
+
+    head = reverseLL(head);
+    cout << "After reversing:- " << endl;
+    print(head);
+
+    return 0;
+}

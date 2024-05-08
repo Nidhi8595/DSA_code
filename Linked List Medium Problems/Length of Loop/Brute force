@@ -1,0 +1,89 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Detect a loop in given Linked List & it's length
+// Brute force approach
+// using hashmap
+
+// T.C. -> O(N * 2 log(N))
+// S.C. -> O(N)
+
+class Node
+{
+public:
+    int data;   // to store value
+    Node *next; /* since we will store the address of next node
+    thats why we are declaring a pointer of datatype "Node" */
+public:
+    /* now we will define constructor to create objects of
+    datatype "Node" */
+    Node(int data1, Node *next1)
+    {
+        data = data1;
+        next = next1;
+    }
+    Node(int data1) // second constructor
+    {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+int loopLength(Node *head)
+{
+    Node *temp = head; // to traverse
+
+    int cnt = 1; // to keep track of length with each Node we visit
+
+    std::unordered_map<Node *, int> Map;
+
+    while (temp != nullptr)
+    {
+        if (Map.find(temp) != Map.end())
+        { /* in case the node isn't already present in Map,
+        it will return a pointer pointing to the end */
+
+            int value = Map[temp];
+            return (cnt - value); /* current length count
+            - the value of length that was stored when
+            we visited that particular node initially */
+        }
+
+        Map[temp] = cnt;
+
+        cnt++;
+
+        temp = temp->next;
+    }
+    
+    return 0; // no loop is present
+}
+
+int main()
+{
+    Node *head = new Node(9);
+    Node *second = new Node(8);
+    Node *third = new Node(7);
+    Node *fourth = new Node(6);
+    Node *fifth = new Node(5);
+    Node *sixth = new Node(4);
+
+    head->next = second;
+    second->next = third;
+    third->next = fourth;
+    fourth->next = fifth;
+    fifth->next = sixth;
+    sixth->next = second;
+
+    int l = loopLength(head);
+    if (loopLength(head))
+    {
+        cout << "Given Linked List has a loop having length -> " << l << endl;
+    }
+    else
+    {
+        cout << "Given Linked List doesn't contain any loop" << endl;
+    }
+
+    return 0;
+}

@@ -1,0 +1,121 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Adding two Linkned Lists from head Node
+
+class Node
+{
+public:
+    int data;   // to store value
+    Node *next; /* since we will store the address of next node
+    thats why we are declaring a pointer of datatype "Node" */
+public:
+    /* now we will define constructor to create objects of class Node */
+    Node(int data1, Node *next1)
+    {
+        data = data1;
+        next = next1;
+    }
+    Node(int data1) // second constructor
+    {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+Node *convert(int n, int arr[])
+{
+    Node *head = new Node(arr[0]); // creating first node
+    Node *move = head;             // initially will point to head pointer
+    for (int i = 1; i < n; i++)
+    {
+        Node *temp = new Node(arr[i]); // creating other nodes
+        move->next = temp;             // now move points to new temporary node we have created
+        move = temp;                   // or move=move->next;// now move pointer moves to next node
+    }
+    return head; // returning the address of first node of Linked list we have created
+}
+
+void print(Node *temp)
+{
+    cout << "The elements in the Linked List are -> ";
+    while (temp != NULL)
+    {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+class Sum
+{
+public:
+    Node *add(Node *l1, Node *l2)
+    {
+        Node *ans = new Node(0);
+        Node *temp = ans; // for traversing in ans
+
+        int c = 0; // carry initially is 0
+        while ((l1 != nullptr || l2 != nullptr) || c)
+        {              // traversing till last node of larger LL
+            int s = 0; // initialization
+
+            if (l1 != nullptr)
+            {
+                s += l1->data; // adding the value from first LL
+                l1 = l1->next; // moving to next Node
+            }
+
+            if (l2 != nullptr)
+            {
+                s += l2->data; // adding the value from second LL
+                l2 = l2->next; // moving to next Node
+            }
+
+            s += c;     // adding the carry into sum which is initially 0
+            c = s / 10; // updating carry with current carry
+            // carry can be either 0 or 1
+
+            Node *newNode = new Node(s % 10);
+            temp->next = newNode; // adding newNode into LL, it starts from Second Node of ans
+            temp = temp->next;    // moving to next node
+        }
+        return ans->next; // returning the second Node address of newly created LL
+    }
+};
+
+int main()
+{
+    int n1, n2;
+    // first Linked List
+    cout << "Enter the no. of elements in first LL -> ";
+    cin >> n1;
+    int arr1[n1];
+    cout << "Enter the elements -> ";
+    for (int i = 0; i < n1; i++)
+    {
+        cin >> arr1[i];
+    }
+
+    Node *head1 = convert(n1, arr1); // address of Linked List
+    print(head1);
+
+    // second Linked List
+    cout << "Enter the no. of elements in second LL -> ";
+    cin >> n2;
+    int arr2[n2];
+    cout << "Enter the elements -> ";
+    for (int i = 0; i < n2; i++)
+    {
+        cin >> arr2[i];
+    }
+    Node *head2 = convert(n2, arr2); // address of Linked List
+    print(head2);
+
+    Sum a;                             // object of class Sum
+    Node *added = a.add(head1, head2); // accessing the member method
+    cout << "After adding both Linked Lists :-" << endl;
+    print(added);
+
+    return 0;
+}

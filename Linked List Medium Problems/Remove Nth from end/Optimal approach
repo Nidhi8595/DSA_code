@@ -1,0 +1,105 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// delete nth Node from the end of the Linked List
+
+// Optimal approach
+// T.C. -> O(N)
+// S.C. -> O(1)
+
+class Node
+{
+public:
+    int data;   // to store value
+    Node *next; /* since we will store the address of next node
+    thats why we are declaring a pointer of datatype "Node" */
+public:
+    /* now we will define constructor to create objects of
+    datatype "Node" */
+    Node(int data1, Node *next1)
+    {
+        data = data1;
+        next = next1;
+    }
+    Node(int data1) // second constructor
+    {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+Node *convert(int n, int arr[])
+{
+    Node *head = new Node(arr[0]); // creting first node
+    Node *move = head;             // initially will point to head pointer
+    for (int i = 1; i < n; i++)
+    {
+        Node *temp = new Node(arr[i]); // creating other nodes
+        move->next = temp;             // now move points to new temporary node we have created
+        move = temp;                   // or move=move->next;// now move pointer moves to next node
+    }
+    return head; // returning the address of first node of Linked list we have created
+}
+
+void print(Node *temp)
+{
+    cout << "The elements in the Linked List are -> ";
+    while (temp != NULL)
+    {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+    cout << endl;
+}
+
+Node *nthfromEnd(Node *head, int k)
+{
+    Node *fast = head;
+    Node *slow = head;
+
+    for (int i = 0; i < k; i++)
+    { // traverse fast till kth Node from start
+        fast = fast->next;
+    }
+
+    if (fast == nullptr)
+    { // delete head node
+        return head->next;
+    }
+
+    // Move both pointers until fast reaches the end
+    while (fast->next != nullptr)
+    {
+        fast = fast->next;
+        slow = slow->next;
+    }
+
+    // Delete the kth node from the end
+    Node *remove = slow->next;
+    slow->next = slow->next->next;
+    delete remove;
+    return head;
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the no. of elements -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    Node *head = convert(n, arr); // address of Linked List
+    print(head);
+
+    int k;
+    cout << "Enter the position from the end to be deleted -> ";
+    cin >> k;
+    cout << "After deleting " << k << "th Node from the end :- " << endl;
+    head = nthfromEnd(head, k);
+    print(head);
+}

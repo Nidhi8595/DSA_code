@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// printing a subsequences having given sum
+
+bool SubSum(int index, int arr[], int n, vector<int> ans, int sum, int k)
+{
+
+    if (index == n)
+    {
+        if (sum == k)
+        {
+            for (auto i : ans)
+            {
+                cout << i << " ";
+            }
+            cout << endl;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    ans.push_back(arr[index]);
+    sum += arr[index]; // take
+    if (SubSum(index + 1, arr, n, ans, sum, k) == true)
+    {
+        return true;
+    }
+
+    sum -= arr[index]; // not take
+    ans.pop_back();
+    if (SubSum(index + 1, arr, n, ans, sum, k) == true)
+    {
+        return true;
+    }
+
+    return false; // none of cases satisfied
+}
+
+int main()
+{
+
+    int n;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter array elements :- ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    int k;
+    cout << "Enter the Sum -> ";
+    cin >> k;
+
+    vector<int> ans;
+    int sum;
+
+    SubSum(0, arr, n, ans, 0, k);
+
+    return 0;
+}

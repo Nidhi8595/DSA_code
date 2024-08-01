@@ -1,0 +1,140 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/* we have to sort the given LL on the basis of values
+stored in them
+e.g -> { 5, 2, 8, 1, 6} -> { 1, 2, 5, 6, 8 }
+
+Better approach :- using Merge Sort
+T.C. -> O()
+S.C. -> O(1)
+*/
+
+class Node
+{
+public:
+    int data;   // to store value
+    Node *next; /* since we will store the address of next node
+    thats why we are declaring a pointer of datatype "Node" */
+public:
+    /* now we will define constructor to create objects of
+    datatype "Node" */
+    Node(int data1, Node *next1)
+    {
+        data = data1;
+        next = next1;
+    }
+    Node(int data1) // second constructor
+    {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+Node *convert(int n, int arr[])
+{
+    Node *head = new Node(arr[0]); // creting first node
+    Node *move = head;             // initially will point to head pointer
+    for (int i = 1; i < n; i++)
+    {
+        Node *temp = new Node(arr[i]); // creating other nodes
+        move->next = temp;             // now move points to new temporary node we have created
+        move = temp;                   // or move=move->next;// now move pointer moves to next node
+    }
+    return head; // returning the address of first node of Linked list we have created
+}
+
+void print(Node *temp)
+{
+    cout << "The elements in the Linked List are -> ";
+    while (temp != NULL)
+    {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+void merge(vector<int> &ar2, int low, int mid, int high)
+{
+    vector<int> temp;
+    int left = low;
+    int right = mid + 1;
+    while (left <= mid && right <= high)
+    {
+        if (ar2[left] <= ar2[right])
+        {
+            temp.push_back(ar2[left]);
+            left++;
+        }
+        else
+        {
+            temp.push_back(ar2[right]);
+            right++;
+        }
+    }
+    while (left <= mid)
+    {
+        temp.push_back(ar2[left]);
+        left++;
+    }
+    while (right <= high)
+    {
+        temp.push_back(ar2[right]);
+        right++;
+    }
+    for (int p = low; p <= high; p++)
+    {
+        ar2[p] = temp[p - low];
+    }
+}
+
+void merges(vector<int> &ar, int low, int high)
+{
+    if (low == high)
+    {
+        return;
+    }
+    int mid = (low + high) / 2;
+    merges(ar, low, mid);
+    merges(ar, mid + 1, high);
+    merge(ar, low, mid, high);
+}
+
+Node *SortLL(Node *head, int n)
+{
+    if (head == nullptr || head->next == nullptr)
+    { // empty or single element
+        return head;
+    }
+
+    Node *mid = findMid(head);
+    Node *left = head;
+    Node *right = mid->next;
+    mid->next = nullptr;
+
+    left = SortLL(left);
+    right = SortLL(right);
+
+    return Merge(left, right);
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the no. of elements -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    Node *head = convert(n, arr); // address of Linked List
+
+    print(head);
+
+    cout << "After Sorting -> " << endl;
+    head = SortLL(head, n);
+    print(head);
+}

@@ -1,0 +1,136 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/* we have to sort the given LL on the babsis of 0, 1 , & 2
+e.g. -> { 2, 1, 2, 0, 2, 1, 2, 0 } as { 0, 0, 1, 1, 2, 2, 2, 2 }
+
+Brute force approach
+T.C. -> O(2N)
+S.C. -> O(1)
+*/
+
+class Node
+{
+public:
+    int data;   // to store value
+    Node *next; /* since we will store the address of next node
+    thats why we are declaring a pointer of datatype "Node" */
+public:
+    /* now we will define constructor to create objects of
+    datatype "Node" */
+    Node(int data1, Node *next1)
+    {
+        data = data1;
+        next = next1;
+    }
+    Node(int data1) // second constructor
+    {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+Node *convert(int n, int arr[])
+{
+    Node *head = new Node(arr[0]); // creating first node
+    Node *move = head;             // initially will point to head pointer
+    for (int i = 1; i < n; i++)
+    {
+        Node *temp = new Node(arr[i]); // creating other nodes
+        move->next = temp;             // now move points to new temporary node we have created
+        move = temp;                   // or move=move->next;// now move pointer moves to next node
+    }
+    return head; // returning the address of first node of Linked list we have created
+}
+
+void print(Node *temp)
+{
+    cout << "The elements in the Linked List are -> ";
+    while (temp != NULL)
+    {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+Node *Sort012(Node *head)
+{
+    if (head == nullptr || head->next == nullptr)
+    { // empty or single element
+        return head;
+    }
+
+    Node *temp = head;
+    int cnt0 = 0, cnt1 = 0, cnt2 = 0;
+
+    // first traversal to count the occurrence of 0,1,2
+    while (temp != nullptr)
+    {
+
+        if (temp->data == 0)
+        {
+            cnt0++;
+        }
+
+        else if (temp->data == 1)
+        {
+            cnt1++;
+        }
+
+        else
+        {
+            cnt2++;
+        }
+
+        temp = temp->next;
+    }
+
+    temp = head;
+    // another traversal to place the values at correct nodes
+    while (temp != nullptr)
+    {
+
+        if (cnt0)
+        {
+            temp->data = 0;
+            cnt0--;
+        }
+
+        else if (cnt1)
+        {
+            temp->data = 1;
+            cnt1--;
+        }
+
+        else
+        {
+            temp->data = 2;
+            cnt2--;
+        }
+
+        temp = temp->next;
+    }
+
+    return head;
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the no. of elements -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    Node *head = convert(n, arr); // address of Linked List
+
+    print(head);
+
+    cout << "After sorting 0's, 1's and 2's -> " << endl;
+    head = Sort012(head);
+    print(head);
+}

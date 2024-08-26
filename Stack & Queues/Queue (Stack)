@@ -1,0 +1,110 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+struct Queue
+{
+    stack<int> in, out;
+
+    void Push()
+    {
+
+        // Pop all elements from input Stack & put them into output Stack
+        while (!in.empty())
+        {
+
+            out.push(in.top());
+            in.pop();
+        }
+
+        // Insert the desired element in the stack input
+        int x;
+        cout << "Enter the element to insert -> " << endl;
+        cin >> x;
+        in.push(x);
+
+        // Pop out elements from the stack output and push them into the stack input
+        while (!out.empty())
+        {
+            in.push(out.top());
+            out.pop();
+        }
+    }
+
+    void Pop()
+    {
+        if (in.empty())
+        {
+            cout << "EMPTY STACK"<<endl;
+        }
+
+        else
+        {
+            int x = in.top();
+            in.pop();
+            cout << "Popped element -> " << x << endl;
+        }
+    }
+
+    void Top()
+    {
+        if (in.empty())
+        {
+            cout << "EMPTY STACK"<<endl;
+        }
+
+        else
+        {
+            cout << in.top()<<endl;
+        }
+    }
+
+    int size()
+    {
+        return in.size();
+    }
+};
+int main()
+{
+    Queue q1;
+
+    int a;
+
+    do
+    {
+        cout << "1 -> Push" << endl;
+        cout << "2 -> Pop" << endl;
+        cout << "3 -> Peek" << endl;
+        cout << "4 -> Exit" << endl;
+
+        cout << "Enter the operation you want to perform -> ";
+        cin >> a;
+
+        switch (a)
+        {
+        case 1:
+        {
+            q1.Push();
+            break;
+        }
+
+        case 2:
+        {
+            q1.Pop();
+            break;
+        }
+        case 3:
+        {
+            q1.Top();
+            break;
+        }
+
+        case 4:
+        {
+            break;
+        }
+        }
+    } while (a != 4);
+
+    return 0;
+}

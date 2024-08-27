@@ -1,0 +1,148 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct stackNode
+{
+    int data;
+    stackNode *next;
+
+    // Constructor to initialize a new node with data
+    stackNode(int d)
+    {
+        data = d;
+        next = nullptr;
+    }
+};
+
+struct Stack
+{
+    stackNode *top;
+    int size;
+
+    // Constructor to initialize the stack
+    Stack()
+    {
+        top = nullptr;
+        size = 0;
+    }
+
+    // Pushes a new element onto the stack
+    void Push(int x)
+    {
+        stackNode *value = new stackNode(x);
+        value->next = top;
+        top = value;
+        size++;
+    }
+
+    // Pops the top element from the stack
+    void Pop()
+    {
+        if (top == nullptr)
+        {
+            cout << "UNDERFLOW" << endl;
+        }
+        else
+        {
+            int topData = top->data;
+            stackNode *temp = top;
+            top = top->next;
+            delete temp;
+            size--;
+            cout << "Popped element -> " << topData << endl;
+        }
+    }
+
+    // Returns the size of the stack
+    int Size()
+    {
+        return size;
+    }
+
+    // Checks if the stack is empty
+    bool Empty()
+    {
+        return (top == nullptr);
+    }
+
+    // Returns the top element of the stack
+    int Peek()
+    {
+        if (top == nullptr)
+        {
+            return -1;
+        }
+        return top->data;
+    }
+
+    // Displays all elements in the stack
+    void display()
+    {
+        stackNode *current = top;
+        while (current != nullptr)
+        {
+            cout << current->data << " ";
+            current = current->next;
+        }
+        cout << endl;
+    }
+};
+
+int main()
+{
+    Stack s1;
+    int a;
+
+    do
+    {
+        cout << "1 -> Push" << endl;
+        cout << "2 -> Pop" << endl;
+        cout << "3 -> Display" << endl;
+        cout << "4 -> Top" << endl;
+        cout << "5 -> Exit" << endl;
+
+        cout << "Enter the operation you want to perform -> ";
+        cin >> a;
+
+        switch (a)
+        {
+        case 1:
+        {
+            int value;
+            cout << "Enter the value to push -> ";
+            cin >> value;
+            s1.Push(value);
+            break;
+        }
+
+        case 2:
+        {
+            s1.Pop();
+            break;
+        }
+
+        case 3:
+        {
+            s1.display();
+            break;
+        }
+
+        case 4:
+        {
+            cout << "The Top element is -> " << s1.Peek() << endl;
+            break;
+        }
+
+        case 5:
+        {
+            break;
+        }
+
+        default:
+            cout << "Invalid option, try again." << endl;
+            break;
+        }
+    } while (a != 5);
+
+    return 0;
+}

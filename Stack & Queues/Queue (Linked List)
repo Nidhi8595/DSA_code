@@ -1,0 +1,141 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class QueueNode
+{
+public:
+    int val;
+    QueueNode *next;
+
+    QueueNode(int x)
+    {
+        val = x;
+        next = nullptr;
+    }
+};
+
+class Queue
+{
+
+public:
+    QueueNode *F = nullptr, *R = nullptr;
+
+    int size = 0;
+
+    bool Empty()
+    {
+        return F == nullptr;
+    }
+
+    void Peek()
+    {
+        if (Empty())
+        {
+            cout << "EMPTY QUEUE" << endl;
+        }
+
+        else
+        {
+            cout << "Top element is -> " << F->val << endl;
+        }
+    }
+
+    void Enqueue(int x)
+    {
+        QueueNode *temp;
+
+        temp = new QueueNode(x);
+        if (temp == nullptr) // When heap exhausted
+        {
+            cout << "OVERFLOW" << endl;
+        }
+
+        else
+        {
+            if (F == nullptr)
+            {
+                F = temp;
+                R = temp;
+            }
+
+            else
+            {
+                R->next = temp;
+                R = temp;
+            }
+
+            size++;
+        }
+    }
+
+    void Dequeue()
+    {
+        if (F == nullptr)
+        {
+            cout << "EMPTY QUEUE" << endl;
+        }
+
+        else
+        {
+            cout << "Popped element -> " << F->val << endl;
+
+            QueueNode *temp = F;
+            F = F->next;
+            delete temp;
+            size--;
+        }
+    }
+};
+
+int main()
+
+{
+    Queue q;
+    int a;
+
+    do
+    {
+        cout << "1 -> Push" << endl;
+        cout << "2 -> Pop" << endl;
+        cout << "3 -> Top" << endl;
+        cout << "4 -> Exit" << endl;
+
+        cout << "Enter the operation you want to perform -> ";
+        cin >> a;
+
+        switch (a)
+        {
+        case 1:
+        {
+            int value;
+            cout << "Enter the value to push -> ";
+            cin >> value;
+            q.Enqueue(value);
+            break;
+        }
+
+        case 2:
+        {
+            q.Dequeue();
+            break;
+        }
+
+        case 3:
+        {
+            q.Peek();
+            break;
+        }
+
+        case 4:
+        {
+            break;
+        }
+
+        default:
+            cout << "Invalid option, try again." << endl;
+            break;
+        }
+    } while (a != 4);
+
+    return 0;
+}

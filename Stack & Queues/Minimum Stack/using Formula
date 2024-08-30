@@ -1,0 +1,132 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// S.C -> O(N)
+// T.C -> O(1)
+
+class MinStack
+{
+    stack<long long> st;
+    long long mini;
+
+public:
+    MinStack()
+    {
+        mini = INT_MAX;
+    }
+
+    void push(int x)
+    {
+        long long val = static_cast<long long>(x); // to prevent integer overflow
+        if (st.empty())
+        {
+            mini = val;
+            st.push(val);
+        }
+        else
+        {
+            if (val < mini)
+            {
+                st.push(2 * val - mini);
+                mini = val;
+            }
+            else
+            {
+                st.push(val);
+            }
+        }
+    }
+
+    void pop()
+    {
+        if (st.empty())
+        {
+            return;
+        }
+
+        long long el = st.top();
+        st.pop();
+
+        if (el < mini)
+        {
+            mini = 2 * mini - el;
+        }
+    }
+
+    int top()
+    {
+        if (st.empty())
+        {
+            return -1;
+        }
+
+        long long el = st.top();
+        if (el < mini)
+        {
+            return mini;
+        }
+        return el;
+    }
+
+    int getMin()
+    {
+        return mini;
+    }
+};
+
+int main()
+{
+    MinStack m;
+
+    int a;
+
+    do
+    {
+        cout << "1 -> Push" << endl;
+        cout << "2 -> Pop" << endl;
+        cout << "3 -> Minimum" << endl;
+        cout << "4 -> Top" << endl;
+        cout << "5 -> Exit" << endl;
+
+        cout << "Enter the operation you want to perform -> ";
+        cin >> a;
+
+        switch (a)
+        {
+        case 1:
+        {
+            int x;
+            cout << "Enter the value -> ";
+            cin >> x;
+            m.push(x);
+            break;
+        }
+
+        case 2:
+        {
+            m.pop();
+            break;
+        }
+
+        case 3:
+        {
+            cout << "Minimum value in the Stack -> " << m.getMin() << endl;
+            break;
+        }
+
+        case 4:
+        {
+            cout << "The Top element is -> " << m.top() << endl;
+            break;
+        }
+
+        case 5:
+        {
+            break;
+        }
+        }
+    } while (a != 5);
+
+    return 0;
+}

@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+
+// S.C. -> O(N)
+// T.C. -> O(N)
+
+using namespace std;
+class Solution
+{
+public:
+    vector<int> nextGE(vector<int> &arr)
+    {
+        int n = arr.size();
+        vector<int> nge(n, -1);
+        stack<int> st;
+        for (int i = 2 * n - 1; i >= 0; i--) // starting from the end
+        {
+            while (!st.empty() && st.top() <= arr[i % n]) // for circular arrays
+            {
+                st.pop();
+            }
+
+            if (i < n)
+            {
+                if (!st.empty())
+                {
+                    nge[i] = st.top();
+                }
+
+                else
+                {
+                    nge[i] = -1;
+                }
+            }
+            st.push(arr[i % n]);
+        }
+        return nge;
+    }
+};
+
+int main()
+{
+    Solution obj;
+    vector<int> v{5, 7, 1, 2, 6, 0};
+
+    vector<int> ans = obj.nextGE(v);
+
+    cout << "The next greater elements are" << endl;
+    for (int i = 0; i < ans.size(); i++)
+    {
+        cout << ans[i] << " ";
+    }
+}

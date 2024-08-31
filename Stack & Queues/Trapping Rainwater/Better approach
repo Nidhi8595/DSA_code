@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// T.C. -> O(3N + 2N)
+// T.C. -> O(3N)
 // S.C. -> O(N) + O(N)
 
 int trap(vector<int> &arr)

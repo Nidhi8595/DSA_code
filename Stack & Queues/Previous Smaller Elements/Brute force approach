@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+
+// Brute force approach
+
+// T.C. -> O(N^2)
+// S.C. -> O(N)
+
+using namespace std;
+
+vector<int> pse(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> ans(n, -1);
+
+    for (int i = 1; i < n; i++)
+    {
+        for (int j = i - 1; j >= 0; j--)
+        {
+            if (arr[j] < arr[i])
+            {
+                ans[i] = arr[j];
+                break;
+            }
+        }
+    }
+
+    return ans;
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+
+    cout << "Enter the elements :- " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    vector<int> ans = pse(arr);
+
+    cout << "The respective previous smaller elements are as :- " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cout << ans[i] << " ";
+    }
+    return 0;
+}

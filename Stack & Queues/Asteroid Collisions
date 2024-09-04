@@ -1,0 +1,73 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// We are given an array of asteroids having positive and negative values
+// The positive asteroids move in the right direction & negative ones move in left
+// When they collide, the ones with smaller absolute value will get destroyed
+// We have to return the final remaining asteroids
+
+// T.C. -> O(2N)
+// S.C. -> O(N)
+
+stack<int> collide(vector<int> arr)
+{
+
+    int n = arr.size();
+    stack<int> st;
+
+    for (int i = 0; i < n; i++)
+    {
+
+        if (arr[i] > 0)
+        {
+
+            st.push(arr[i]);
+        }
+
+        else
+        {
+            while (!st.empty() && st.top() > 0 && st.top() < abs(arr[i]))
+            {
+                st.pop();
+            }
+
+            if (!st.empty() && st.top() == abs(arr[i]))
+            {
+                st.pop();
+            }
+
+            else if (st.empty() || st.top() < 0)
+            {
+                st.push(arr[i]);
+            }
+        }
+    }
+
+    return st;
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+
+    cout << "Enter the elements :- " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    stack<int> ans = collide(arr);
+    cout << "The remaining asteroids after collisions are -> " << endl;
+
+    while(!ans.empty())
+    {
+        cout << ans.top() << " ";
+        ans.pop();
+    }
+    return 0;
+}

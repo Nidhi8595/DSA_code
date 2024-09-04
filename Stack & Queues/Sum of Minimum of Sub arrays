@@ -1,0 +1,102 @@
+// finding the sum of the minimum elements of all the possible unique subarrays
+
+// T.C. -> O(5N)
+// S.C. -> O(5N)
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+vector<int> NextSmallerElement(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> nse(n);
+    stack<int> st;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        while (!st.empty() && arr[st.top()] >= arr[i])
+        {
+            st.pop();
+        }
+
+        if (st.empty())
+        {
+            nse[i] = n;
+        }
+        else
+        {
+            nse[i] = st.top();
+        }
+
+        st.push(i);
+    }
+
+    return nse;
+}
+
+vector<int> PreviousSmallerOrEqualElement(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> psee(n);
+    stack<int> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && arr[st.top()] > arr[i])
+        {
+            st.pop();
+        }
+
+        if (st.empty())
+        {
+            psee[i] = -1;
+        }
+        else
+        {
+            psee[i] = st.top();
+        }
+
+        st.push(i);
+    }
+
+    return psee;
+}
+
+int SumOfMin(vector<int> &arr)
+{
+    int n = arr.size();
+
+    vector<int> nse = NextSmallerElement(arr);
+    vector<int> psee = PreviousSmallerOrEqualElement(arr);
+    int total = 0;
+    int mod = 1e9 + 7;
+
+    for (int i = 0; i < n; i++)
+    {
+        int left = i - psee[i];
+        int right = nse[i] - i;
+
+        total = (total + (right * left * 1LL * arr[i]) % mod) % mod;
+    }
+
+    return total;
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+
+    cout << "Enter the elements :- " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    cout << "The sum of Minimum of all the subarrays is -> " << SumOfMin(arr) << endl;
+    return 0;
+}

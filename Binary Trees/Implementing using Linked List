@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// IMPLEMENTING BINARY TREE USING LINKED LIST
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+int main()
+{
+    Node *root = new Node(1);
+
+    // left and right child
+    root->left = new Node(2);
+    root->right = new Node(3);
+
+    // right child node for left child of root
+    root->left->right = new Node(5);
+}

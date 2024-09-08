@@ -1,0 +1,83 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// IMPLEMENTING BINARY TREE USING LINKED LIST
+// Taking input from user
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, int value)
+{
+    if (root == nullptr)
+    {
+        root = new Node(value);
+        return;
+    }
+
+    queue<Node *> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        if (current->l == nullptr)
+        {
+            current->l = new Node(value);
+            return;
+        }
+
+        else
+        {
+            q.push(current->l);
+        }
+
+        if (current->r == nullptr)
+        {
+            current->r = new Node(value);
+            return;
+        }
+
+        else
+        {
+            q.push(current->r);
+        }
+    }
+}
+
+int main()
+{
+
+    Node *root = nullptr;
+    int n, value;
+
+    cout << "Enter the number of nodes to insert -> ";
+    cin >> n;
+
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter the value for Node " << (i + 1) << " -> ";
+        cin >> value;
+        insert(root, value);
+    }
+
+    cout << "Done";
+
+    return 0;
+}

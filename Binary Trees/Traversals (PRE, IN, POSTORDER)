@@ -1,0 +1,185 @@
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// TREE TRAVERSALS
+
+// T.C. -> O(N)
+// S.C. -> O(N)
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, int value)
+{
+    if (root == nullptr)
+    {
+        root = new Node(value);
+        return;
+    }
+
+    queue<Node *> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        if (current->l == nullptr)
+        {
+            current->l = new Node(value);
+            return;
+        }
+
+        else
+        {
+            q.push(current->l);
+        }
+
+        if (current->r == nullptr)
+        {
+            current->r = new Node(value);
+            return;
+        }
+
+        else
+        {
+            q.push(current->r);
+        }
+    }
+}
+
+// PREORDER TRAVERSAL
+void preorder(Node *root, vector<int> &arr1)
+{
+    // If the current node is NULL
+    if (root == nullptr)
+    {
+        return;
+    }
+
+    // current value
+    arr1.push_back(root->data);
+
+    // left subtree
+    preorder(root->l, arr1);
+
+    // right subtree
+    preorder(root->r, arr1);
+}
+vector<int> preOrder(Node *root)
+{
+    vector<int> arr1; // store preorder traversal values
+    preorder(root, arr1);
+
+    return arr1;
+}
+
+// INORDER TRAVERSAL
+void inorder(Node *root, vector<int> &arr2)
+{
+    // If the current node is NULL
+    if (root == nullptr)
+    {
+        return;
+    }
+
+    // left subtree
+    inorder(root->l, arr2);
+
+    // current value
+    arr2.push_back(root->data);
+
+    // right subtree
+    inorder(root->r, arr2);
+}
+vector<int> inOrder(Node *root)
+{
+    vector<int> arr2;
+    inorder(root, arr2);
+
+    return arr2;
+}
+
+// POSTORDER TRAVERSAL
+void postorder(Node *root, vector<int> &arr3)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+
+    // left subtree
+    postorder(root->l, arr3);
+
+    // right subtree
+    postorder(root->r, arr3);
+
+    // current value
+    arr3.push_back(root->data);
+}
+vector<int> postOrder(Node *root)
+{
+    vector<int> arr3;
+    postorder(root, arr3);
+
+    return arr3;
+}
+
+void printVector(const vector<int> &vec)
+{
+    for (int num : vec)
+    {
+        cout << num << " ";
+    }
+    cout << endl;
+}
+
+int main()
+{
+
+    Node *root = nullptr;
+    int n, value;
+
+    cout << "Enter the number of nodes to insert -> ";
+    cin >> n;
+
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter the value for Node " << (i + 1) << " -> ";
+        cin >> value;
+        insert(root, value);
+    }
+
+    // PREORDER
+    vector<int> result1 = preOrder(root);
+    cout << "Preorder Traversal :- " << endl;
+    printVector(result1);
+
+    // INORDER
+    vector<int> result2 = inOrder(root);
+    cout << "Inorder Traversal :- " << endl;
+    printVector(result2);
+
+    // POSTORDER
+    vector<int> result3 = postOrder(root);
+    cout << "Postorder Traversal :- " << endl;
+    printVector(result3);
+
+    return 0;
+}

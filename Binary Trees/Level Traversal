@@ -1,0 +1,143 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// TREE LEVEL TRAVERSAL
+
+// T.C. -> O(N)
+// S.C. -> O(N)
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, int value)
+{
+    if (root == nullptr)
+    {
+        root = new Node(value);
+        return;
+    }
+
+    queue<Node *> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        if (current->l == nullptr)
+        {
+            current->l = new Node(value);
+            return;
+        }
+
+        else
+        {
+            q.push(current->l);
+        }
+
+        if (current->r == nullptr)
+        {
+            current->r = new Node(value);
+            return;
+        }
+
+        else
+        {
+            q.push(current->r);
+        }
+    }
+}
+
+vector<vector<int>> levelOrder(Node *root)
+{
+
+    vector<vector<int>> ans; // to store levels
+
+    if (root == nullptr)
+    {
+        return ans;
+    }
+
+    queue<Node *> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        int size = q.size();
+        vector<int> level;
+
+        for (int i = 0; i < size; i++)
+        {
+
+            Node *node = q.front();
+            q.pop();
+
+            level.push_back(node->data);
+
+            // child nodes
+            if (node->l != nullptr)
+            {
+                q.push(node->l);
+            }
+
+            if (node->r != nullptr)
+            {
+                q.push(node->r);
+            }
+        }
+
+        ans.push_back(level);
+    }
+
+    return ans;
+}
+
+void printVector(const vector<vector<int>> &vec)
+{
+    for (vector<int> v : vec)
+    {
+        for (int num : v)
+        {
+            cout << num << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main()
+{
+
+    Node *root = nullptr;
+    int n, value;
+
+    cout << "Enter the number of nodes to insert -> ";
+    cin >> n;
+
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter the value for Node " << (i + 1) << " -> ";
+        cin >> value;
+        insert(root, value);
+    }
+
+    vector<vector<int>> result1 = levelOrder(root);
+    cout << "Level Order Traversal :- " << endl;
+    printVector(result1);
+
+    return 0;
+}

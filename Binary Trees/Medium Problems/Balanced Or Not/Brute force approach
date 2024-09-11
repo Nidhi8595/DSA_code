@@ -1,0 +1,144 @@
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Checking whether the Binary Tree is Balanced or not
+
+// Brute force
+
+// T.C. -> O(N^2)
+// S.C. -> O(1)
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+// void insert(Node *&root, int value)
+// {
+//     if (root == nullptr)
+//     {
+//         root = new Node(value);
+//         return;
+//     }
+
+//     queue<Node *> q;
+//     q.push(root);
+
+//     while (!q.empty())
+//     {
+//         Node *current = q.front();
+//         q.pop();
+
+//         if (current->l == nullptr)
+//         {
+//             current->l = new Node(value);
+//             return;
+//         }
+
+//         else
+//         {
+//             q.push(current->l);
+//         }
+
+//         if (current->r == nullptr)
+//         {
+//             current->r = new Node(value);
+//             return;
+//         }
+
+//         else
+//         {
+//             q.push(current->r);
+//         }
+//     }
+// }
+
+int maxDepth(Node *root)
+{
+    if (root == NULL)
+    {
+        return 0;
+    }
+
+    // left subtree
+    int lh = maxDepth(root->l);
+
+    // right subtree
+    int rh = maxDepth(root->r);
+
+    // add 1 for current node since we are performing it for each respective level
+    return 1 + max(lh, rh);
+}
+
+bool isBalanced(Node *root)
+{
+    if (root == nullptr)
+    {
+        return true;
+    }
+
+    int leftHeight = maxDepth(root->l);
+
+    int rightHeight = maxDepth(root->r);
+
+    // Absolute difference in heights of left & right subtrees <= 1 or not
+    if (abs(leftHeight - rightHeight) <= 1 && isBalanced(root->l) && isBalanced(root->r))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+int main()
+{
+
+    // Node *root = nullptr;
+    // int n, value;
+
+    // cout << "Enter the number of nodes to insert -> ";
+    // cin >> n;
+
+    // for (int i = 0; i < n; ++i)
+    // {
+    //     cout << "Enter the value for Node " << (i + 1) << " -> ";
+    //     cin >> value;
+    //     insert(root, value);
+    // }
+
+    Node *root = new Node(1);
+    root->l = new Node(2);
+    root->r = new Node(3);
+    root->l->l = new Node(4);
+    root->l->r = new Node(5);
+    root->l->r->r = new Node(6);
+    root->l->r->r->r = new Node(7);
+
+    int ans = isBalanced(root);
+
+    if (ans)
+    {
+        cout << "This is a Balanced Binary Tree" << endl;
+    }
+    else
+    {
+        cout << "Not a Balanced Binary Tree" << endl;
+    }
+
+    return 0;
+}

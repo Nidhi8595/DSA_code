@@ -66,23 +66,6 @@ struct Node
 //     }
 // }
 
-int maxDepth(Node *root)
-{
-    if (root == NULL)
-    {
-        return 0;
-    }
-
-    // left subtree
-    int lh = maxDepth(root->l);
-
-    // right subtree
-    int rh = maxDepth(root->r);
-
-    // add 1 for current node since we are performing it for each respective level
-    return 1 + max(lh, rh);
-}
-
 int HeightDiff(Node *root)
 {
     // empty tree

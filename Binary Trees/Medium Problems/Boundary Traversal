@@ -1,0 +1,210 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Traversing the Binary Tree in across the boundary starting from left side to ending up to rifgt side, then from last level to starting ones
+
+// T.C. -> O(N)
+// S.C. -> O(N)
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    queue<Node *> q;
+    int i = 0;
+
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
+
+        i++;
+
+        // right cild
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
+
+// checking if a node is leaf node or not
+bool isLeaf(Node *root)
+{
+    if (!root->l && !root->r)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void addLeftBoundary(Node *root, vector<int> &res)
+{
+    Node *current = root->l;
+    while (current)
+    {
+        if (!isLeaf(current))
+        {
+            res.push_back(current->data);
+        }
+
+        // left child
+        if (current->l)
+        {
+            current = current->l;
+        }
+
+        // otherwise right child
+        else
+        {
+            current = current->r;
+        }
+    }
+}
+
+void addRightBoundary(Node *root, vector<int> &res)
+{
+    Node *current = root->r;
+    vector<int> temp;
+
+    while (current)
+    {
+        if (!isLeaf(current))
+        {
+            temp.push_back(current->data);
+        }
+
+        // right child
+        if (current->r)
+        {
+            current = current->r;
+        }
+
+        // otherwise left child
+        else
+        {
+            current = current->l;
+        }
+    }
+
+    // Reverse
+    for (int i = temp.size() - 1; i >= 0; --i)
+    {
+        res.push_back(temp[i]);
+    }
+}
+
+// Leaves
+void addLeaves(Node *root, vector<int> &res)
+{
+
+    if (isLeaf(root))
+    {
+        res.push_back(root->data);
+        return;
+    }
+
+    if (root->l)
+    {
+        addLeaves(root->l, res);
+    }
+
+    if (root->r)
+    {
+        addLeaves(root->r, res);
+    }
+}
+
+vector<int> Boundary(Node *root)
+{
+    vector<int> res;
+
+    if (!root)
+    {
+        return res;
+    }
+
+    if (!isLeaf(root))
+    {
+        res.push_back(root->data);
+    }
+
+    addLeftBoundary(root, res);
+    addLeaves(root, res);
+    addRightBoundary(root, res);
+
+    return res;
+}
+
+void print(const vector<int> &v)
+{
+    for (int i : v)
+    {
+        cout << i << " ";
+    }
+}
+
+int main()
+{
+
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
+
+    insert(root, arr);
+
+    vector<int> ans = Boundary(root);
+
+    print(ans);
+
+    return 0;
+}

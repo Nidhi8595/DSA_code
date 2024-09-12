@@ -23,43 +23,45 @@ struct Node
     }
 };
 
-void insert(Node *&root, int value)
+void insert(Node *&root, const vector<int> &arr)
 {
-    if (root == nullptr)
+    if (arr.empty())
     {
-        root = new Node(value);
         return;
     }
 
     queue<Node *> q;
-    q.push(root);
+    int i = 0;
 
-    while (!q.empty())
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
     {
         Node *current = q.front();
         q.pop();
 
-        if (current->l == nullptr)
+        // left child
+        if (arr[i] != -1)
         {
-            current->l = new Node(value);
-            return;
-        }
-
-        else
-        {
+            current->l = new Node(arr[i]);
             q.push(current->l);
         }
 
-        if (current->r == nullptr)
-        {
-            current->r = new Node(value);
-            return;
-        }
+        i++;
 
-        else
+        // right cild
+        if (i < arr.size() && arr[i] != -1)
         {
+            current->r = new Node(arr[i]);
             q.push(current->r);
         }
+        i++;
     }
 }
 
@@ -111,17 +113,19 @@ int main()
 {
 
     Node *root = nullptr;
-    int n, value;
+    int n;
 
-    cout << "Enter the number of nodes to insert -> ";
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
     cin >> n;
 
+    vector<int> arr(n);
     for (int i = 0; i < n; ++i)
     {
-        cout << "Enter the value for Node " << (i + 1) << " -> ";
-        cin >> value;
-        insert(root, value);
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
     }
+
+    insert(root, arr);
 
     // PREORDER
     vector<int> result1 = preorderTraversal(root);

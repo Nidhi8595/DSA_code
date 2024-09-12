@@ -26,45 +26,47 @@ struct Node
     }
 };
 
-// void insert(Node *&root, int value)
-// {
-//     if (root == nullptr)
-//     {
-//         root = new Node(value);
-//         return;
-//     }
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
 
-//     queue<Node *> q;
-//     q.push(root);
+    queue<Node *> q;
+    int i = 0;
 
-//     while (!q.empty())
-//     {
-//         Node *current = q.front();
-//         q.pop();
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
 
-//         if (current->l == nullptr)
-//         {
-//             current->l = new Node(value);
-//             return;
-//         }
+    i++;
 
-//         else
-//         {
-//             q.push(current->l);
-//         }
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
 
-//         if (current->r == nullptr)
-//         {
-//             current->r = new Node(value);
-//             return;
-//         }
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
 
-//         else
-//         {
-//             q.push(current->r);
-//         }
-//     }
-// }
+        i++;
+
+        // right cild
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
 
 int maxDepth(Node *root)
 {
@@ -108,26 +110,20 @@ bool isBalanced(Node *root)
 int main()
 {
 
-    // Node *root = nullptr;
-    // int n, value;
+    Node *root = nullptr;
+    int n;
 
-    // cout << "Enter the number of nodes to insert -> ";
-    // cin >> n;
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
 
-    // for (int i = 0; i < n; ++i)
-    // {
-    //     cout << "Enter the value for Node " << (i + 1) << " -> ";
-    //     cin >> value;
-    //     insert(root, value);
-    // }
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
 
-    Node *root = new Node(1);
-    root->l = new Node(2);
-    root->r = new Node(3);
-    root->l->l = new Node(4);
-    root->l->r = new Node(5);
-    root->l->r->r = new Node(6);
-    root->l->r->r->r = new Node(7);
+    insert(root, arr);
 
     int ans = isBalanced(root);
 

@@ -1,0 +1,152 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Bottom View of a Binary Tree
+
+// Optimal approach
+
+// T.C. -> O(N)
+// S.C. -> O(N)
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    queue<Node *> q;
+    int i = 0;
+
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
+
+        i++;
+
+        // right cild
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
+
+vector<int> bottomView(Node *root)
+{
+
+    vector<int> ans;
+
+    if (root == nullptr)
+    {
+        return ans;
+    }
+
+    map<int, int> mpp; // vertical , node data
+
+    queue<pair<Node *, int>> q;
+
+    q.push({root, 0});
+
+    // BFS traversal
+    while (!q.empty())
+    {
+
+        auto it = q.front();
+        q.pop();
+
+        Node *node = it.first;
+        int ver = it.second;
+
+        mpp[ver] = node->data;
+
+        // left child
+        if (node->l)
+        {
+
+            q.push({node->l, ver - 1});
+        }
+
+        // right child
+        if (node->r)
+        {
+
+            q.push({node->r, ver + 1});
+        }
+    }
+
+    for (auto it : mpp)
+    {
+        ans.push_back(it.second);
+    }
+
+    return ans;
+}
+
+void printVector(const vector<int> &vec)
+{
+    for (int v : vec)
+    {
+        cout << v << " ";
+    }
+}
+
+int main()
+{
+
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
+
+    insert(root, arr);
+
+    vector<int> result = bottomView(root);
+    cout << "Bottom view :- " << endl;
+    printVector(result);
+
+    return 0;
+}

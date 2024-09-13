@@ -1,0 +1,156 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Vertical order traversal of a Binary Tree
+
+// Optimal approach
+
+// T.C. -> O(N * 3log2N)
+// S.C. -> O(N + N/2)
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    queue<Node *> q;
+    int i = 0;
+
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
+
+        i++;
+
+        // right cild
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
+
+vector<vector<int>> VerticalOrder(Node *root)
+{
+    map<int, map<int, multiset<int>>> nodes; // node, vertical, level
+
+    queue<pair<Node *, pair<int, int>>> q;
+
+    q.push({root, {0, 0}}); // 0th level and 0th vertical
+
+    // BFS traversal
+    while (!q.empty())
+    {
+        // accessing each node in the queue one by one
+        auto p = q.front();
+        q.pop();
+
+        Node *temp = p.first;
+
+        // x -> vertical
+        int x = p.second.first;
+
+        // y -> level
+        int y = p.second.second;
+
+        nodes[x][y].insert(temp->data);
+
+        // left child
+        if (temp->l)
+        {
+            q.push({temp->l, {x - 1, y + 1}}); // vertical decreased ( leftward direction)  & level increased( downward direction)
+        }
+
+        // right child
+        if (temp->r)
+        {
+            q.push({temp->r, {x + 1, y + 1}}); // vertical increased( rightward direction)  & level increased( downward direction)
+        }
+    }
+
+    vector<vector<int>> ans;
+    for (auto p : nodes)
+    {
+        vector<int> col;
+        for (auto q : p.second)
+        {
+            col.insert(col.end(), q.second.begin(), q.second.end());
+        }
+
+        ans.push_back(col);
+    }
+    return ans;
+}
+
+void printVector(const vector<vector<int>> &vec)
+{
+    for (vector<int> v : vec)
+    {
+        for (int num : v)
+        {
+            cout << num << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main()
+{
+
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
+
+    insert(root, arr);
+
+    vector<vector<int>> result = VerticalOrder(root);
+    cout << "Level Order Traversal :- " << endl;
+    printVector(result);
+    return 0;
+}

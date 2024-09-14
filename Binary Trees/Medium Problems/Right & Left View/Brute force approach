@@ -1,0 +1,179 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Right & Left view of a Binary Tree
+
+// Brute force approach
+
+// T.C. -> O(N)
+// S.C. -> O(N)
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    queue<Node *> q;
+    int i = 0;
+
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
+
+        i++;
+
+        // right cild
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
+
+vector<vector<int>> levelOrder(Node *root)
+{
+    vector<vector<int>> ans;
+
+    if (root == nullptr)
+    {
+        return ans;
+    }
+
+    queue<Node *> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        int size = q.size();
+        vector<int> level;
+
+        for (int i = 0; i < size; i++)
+        {
+            Node *top = q.front();
+            level.push_back(top->data);
+            q.pop();
+
+            // left child
+            if (top->l != NULL)
+            {
+                q.push(top->l);
+            }
+
+            // right child
+            if (top->r != NULL)
+            {
+                q.push(top->r);
+            }
+        }
+
+        ans.push_back(level);
+    }
+
+    return ans;
+}
+
+void printVector(const vector<int> &vec)
+{
+    for (int v : vec)
+    {
+        cout << v << " ";
+    }
+}
+
+vector<int> RightView(Node *root)
+{
+
+    vector<int> ans;
+
+    vector<vector<int>> levelTraversal = levelOrder(root);
+
+    // add the last element from each level, i.e. rightmost
+    for (auto level : levelTraversal)
+    {
+        ans.push_back(level.back());
+    }
+
+    return ans;
+}
+
+vector<int> LeftView(Node *root)
+{
+
+    vector<int> ans;
+
+    vector<vector<int>> levelTraversal = levelOrder(root);
+
+    // add the first element from each level, i.e. leftmost
+    for (auto level : levelTraversal)
+    {
+        ans.push_back(level.front());
+    }
+
+    return ans;
+}
+
+int main()
+{
+
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
+
+    insert(root, arr);
+
+    vector<int> result1 = RightView(root);
+    cout << "Right view :- " << endl;
+    printVector(result1);
+
+    vector<int> result2 = LeftView(root);
+    cout << "Left view :- " << endl;
+    printVector(result2);
+
+    return 0;
+}

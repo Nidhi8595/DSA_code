@@ -1,0 +1,167 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Right & Left view of a Binary Tree
+
+// Optimal approach
+
+// T.C. -> O(log2N)
+// S.C. -> O(log2N)
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    queue<Node *> q;
+    int i = 0;
+
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
+
+        i++;
+
+        // right cild
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
+
+void recursionLeft(Node *root, int level, vector<int> &ans)
+{
+
+    if (root == nullptr)
+    {
+        return;
+    }
+
+    if (ans.size() == level)
+    {
+        ans.push_back(root->data);
+    }
+
+    // left child
+    recursionLeft(root->l, level + 1, ans);
+
+    // right child
+    recursionLeft(root->r, level + 1, ans);
+}
+
+void recursionRight(Node *root, int level, vector<int> &ans)
+{
+
+    if (root == nullptr)
+    {
+        return;
+    }
+
+    if (ans.size() == level)
+    {
+
+        ans.push_back(root->data);
+    }
+
+    // right child
+    recursionRight(root->r, level + 1, ans);
+
+    // left child
+    recursionRight(root->l, level + 1, ans);
+}
+
+void printVector(const vector<int> &vec)
+{
+    for (int v : vec)
+    {
+        cout << v << " ";
+    }
+    cout << endl;
+}
+
+vector<int> RightView(Node *root)
+{
+
+    vector<int> ans;
+
+    recursionRight(root, 0, ans);
+
+    return ans;
+}
+
+vector<int> LeftView(Node *root)
+{
+
+    vector<int> ans;
+
+    recursionLeft(root, 0, ans);
+
+    return ans;
+}
+
+int main()
+{
+
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
+
+    insert(root, arr);
+
+    vector<int> result1 = RightView(root);
+    cout << "Right view :- " << endl;
+    printVector(result1);
+
+    vector<int> result2 = LeftView(root);
+    cout << "Left view :- " << endl;
+    printVector(result2);
+
+    return 0;
+}

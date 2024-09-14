@@ -1,0 +1,119 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Finding the Maximum Sum that is possible upon adding all the nodes along any path in a Binary tree
+
+// Optimal approach
+
+// T.C. -> O(N)
+// S.C. -> O(1)
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    queue<Node *> q;
+    int i = 0;
+
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
+
+        i++;
+
+        // right cild
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
+
+int findMaxPathSum(Node *root, int &maxi)
+{
+
+    if (root == nullptr)
+    {
+        return 0;
+    }
+
+    // left subtree
+    int leftMaxPath = max(0, findMaxPathSum(root->l, maxi));
+
+    // right subtree
+    int rightMaxPath = max(0, findMaxPathSum(root->r, maxi));
+
+    maxi = max(maxi, leftMaxPath + rightMaxPath + root->data);
+
+    return max(leftMaxPath, rightMaxPath) + root->data;
+}
+
+int MaxPathSum(Node *root)
+{
+    int maxi = INT_MIN;
+
+    findMaxPathSum(root, maxi);
+
+    return maxi;
+}
+int main()
+{
+
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
+
+    insert(root, arr);
+
+    int ans = MaxPathSum(root);
+    cout << "Maximum Path Sum -> " << ans << endl;
+
+    return 0;
+}

@@ -1,0 +1,138 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Symmetric Binary Tree i.e. it's mirror image will be it's exact copy
+
+// Optimal approach
+
+// T.C. -> O(N)
+// S.C. -> O(1)
+
+struct Node
+{
+    int data; // value
+
+    Node *l; // left child
+
+    Node *r; // right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    queue<Node *> q;
+    int i = 0;
+
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
+
+        i++;
+
+        // right cild
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
+
+bool isSymmetric2(Node *root1, Node *root2)
+{
+
+    if (root1 == nullptr || root2 == nullptr)
+    {
+        return root1 == root2; // both should be null even if one is null
+    }
+
+    return (root1->data == root2->data) && isSymmetric2(root1->l, root2->r) && isSymmetric2(root1->r, root2->l);
+}
+
+bool isSymmetric(Node *root)
+{
+
+    if (root == nullptr)
+    {
+
+        return true;
+    }
+
+    return isSymmetric2(root->l, root->r);
+}
+
+void printInorder(Node *root)
+{
+    if (root == nullptr)
+    {
+        return;
+    }
+    printInorder(root->l);
+    cout << root->data << " ";
+    printInorder(root->r);
+}
+
+int main()
+{
+
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
+
+    insert(root, arr);
+
+    cout << "Inorder :- ";
+    printInorder(root);
+    cout << endl;
+
+    bool ans = isSymmetric(root);
+
+    if (ans)
+    {
+        cout << "This Tree is Symmetrical" << endl;
+    }
+    else
+    {
+        cout << "Not Symmetrical" << endl;
+    }
+
+    return 0;
+}

@@ -1,0 +1,156 @@
+#include <bits/stdc++.h>
+
+// We have to find the path to a given leaf node from the root of the Binary Tree
+
+// Optimal approach
+
+// T.C. -> O(N)
+// S.C. -> O(N)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    queue<Node *> q;
+    int i = 0;
+
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
+
+        i++;
+
+        // right child
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
+
+// to find the node with a given value
+Node *findNode(Node *root, int val)
+{
+    if (!root)
+    {
+        return nullptr;
+    }
+    if (root->data == val)
+    {
+        return root;
+    }
+
+    Node *leftSearch = findNode(root->l, val);
+    if (leftSearch)
+    {
+        return leftSearch;
+    }
+
+    return findNode(root->r, val);
+}
+
+Node *lowestCommonAncestor(Node *root, Node *p, Node *q)
+{
+    if (root == nullptr || root == p || root == q)
+    {
+        return root;
+    }
+    Node *left = lowestCommonAncestor(root->l, p, q);
+    Node *right = lowestCommonAncestor(root->r, p, q);
+
+    if (left == nullptr)
+    {
+        return right;
+    }
+    else if (right == nullptr)
+    {
+        return left;
+    }
+    else
+    {
+        return root;
+    }
+}
+
+int main()
+{
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
+
+    insert(root, arr);
+
+    int a, b;
+    cout << "Enter the value of the first node -> ";
+    cin >> a;
+
+    cout << "Enter the value of the second node -> ";
+    cin >> b;
+
+    Node *p = findNode(root, a);
+    Node *q = findNode(root, b);
+
+    if (!p || !q)
+    {
+        cout << "One or both of the nodes were not found in the tree." << endl;
+        return 0;
+    }
+
+    Node *ans = lowestCommonAncestor(root, p, q);
+
+    if (ans)
+    {
+        cout << "The Lowest Common Ancestor of nodes " << a << " and " << b << " is -> " << ans->data << endl;
+    }
+    else
+    {
+        cout << "LCA not found." << endl;
+    }
+
+    return 0;
+}

@@ -1,0 +1,168 @@
+#include <bits/stdc++.h>
+
+// We have to convert the values of each node in such a way that each node has a value equal to the sum of it's child nodes
+
+// Optimal approach
+
+// T.C. -> O(N)
+// S.C. -> O(N)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    queue<Node *> q;
+    int i = 0;
+
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
+
+        i++;
+
+        // right child
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
+
+void changeTree(Node *root)
+{
+    if (root == nullptr)
+    {
+        return;
+    }
+
+    // If it's a leaf node, return
+    if (root->l == nullptr && root->r == nullptr)
+    {
+        return;
+    }
+
+    // Calculate the sum of child nodes
+    int childSum = 0;
+    if (root->l)
+    {
+        childSum += root->l->data;
+    }
+    if (root->r)
+    {
+        childSum += root->r->data;
+    }
+
+    // Case 1: If the sum of children is greater than or equal to the node's data, update the node's data
+    if (childSum >= root->data)
+    {
+        root->data = childSum;
+    }
+    else
+    {
+        // Case 2: If node's data is greater, propagate the node's data down to its children
+        if (root->l)
+        {
+            root->l->data = root->data;
+        }
+        if (root->r)
+        {
+            root->r->data = root->data;
+        }
+    }
+
+    // Recursive calls for the left and right subtree
+    changeTree(root->l);
+    changeTree(root->r);
+
+    // After updating the children, ensure that the node's value matches the children's sum
+    childSum = 0;
+    if (root->l)
+    {
+        childSum += root->l->data;
+    }
+    if (root->r)
+    {
+        childSum += root->r->data;
+    }
+
+    // Finally, update the current node's value to be the sum of its updated children
+    root->data = childSum;
+}
+
+void inorderTraversal(Node *root)
+{
+    if (root == nullptr)
+    {
+        return;
+    }
+
+    inorderTraversal(root->l);
+    cout << root->data << " ";
+    inorderTraversal(root->r);
+}
+
+int main()
+{
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
+
+    insert(root, arr);
+
+    cout << "Binary Tree before :- " << endl;
+    inorderTraversal(root);
+    cout << endl;
+
+    changeTree(root);
+
+    cout << "After Children Sum Property :- " << endl;
+    inorderTraversal(root);
+    cout << endl;
+
+    return 0;
+}

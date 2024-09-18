@@ -1,0 +1,136 @@
+#include <bits/stdc++.h>
+
+// In a Binary Search Tree, the value of left child is always lesser than root, whereas right child should always have a value greater than the root node
+
+// Optimal approach
+
+// T.C. -> O(log 2N)
+// S.C. -> O(1)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, int val)
+{
+    if (root == nullptr)
+    {
+        root = new Node(val);
+        return;
+    }
+
+    // left subtree
+    if (val < root->data)
+    {
+        insert(root->l, val);
+    }
+
+    // right subtree
+    else if (val > root->data)
+    {
+        insert(root->r, val);
+    }
+    // If val == root->data , nothing bcuz (no duplicates in BST)
+}
+
+void insertBST(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    for (int val : arr)
+    {
+        if (val != -1)
+        {
+            insert(root, val);
+        }
+    }
+}
+
+Node *searchBST(Node *root, int val)
+{
+
+    while (root != nullptr && root->data != val)
+    {
+        if (val < root->data)
+        {
+            root = root->l;
+        }
+
+        else
+        {
+            root = root->r;
+        }
+    }
+
+    return root;
+}
+
+void printInOrder(Node *root)
+{
+
+    if (root == nullptr)
+    {
+
+        return;
+    }
+
+    printInOrder(root->l);
+
+    cout << root->data << " ";
+
+    printInOrder(root->r);
+}
+
+int main()
+{
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for nodes :- ";
+        cin >> arr[i];
+    }
+
+    insertBST(root, arr);
+
+    cout << "Binary Search Tree -> " << endl;
+    printInOrder(root);
+    cout << endl;
+
+    int t;
+
+    cout << "Enter the target -> " << endl;
+    cin >> t;
+
+    Node *ans = searchBST(root, t);
+
+    if (ans != nullptr)
+    {
+        cout << "Value " << t << " is present in the BST " << endl;
+    }
+    else
+    {
+        cout << "Value " << t << " not found in the BST" << endl;
+    }
+
+    return 0;
+}

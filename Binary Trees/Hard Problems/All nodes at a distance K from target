@@ -1,0 +1,224 @@
+#include <bits/stdc++.h>
+
+// We have to find out all the nodes that are present at a distanace k from the given target node, both in upward as well as downward direction
+
+// Optimal approach
+
+// T.C. -> O(3N)
+// S.C. -> O(2N)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    queue<Node *> q;
+    int i = 0;
+
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
+
+        i++;
+
+        // right child
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
+
+void markParents(Node *root, unordered_map<Node *, Node *> &parent_track, Node *t)
+{
+    queue<Node *> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        if (current->l)
+        {
+            parent_track[current->l] = current;
+            q.push(current->l);
+        }
+
+        if (current->r)
+        {
+            parent_track[current->r] = current;
+            q.push(current->r);
+        }
+    }
+}
+
+vector<int> distK(Node *root, Node *t, int k)
+{
+    unordered_map<Node *, Node *> parent_track;
+
+    markParents(root, parent_track, t);
+
+    unordered_map<Node *, bool> visited; // hash to keep track of nodes that are visited once to avoid repetition
+
+    queue<Node *> q;
+    q.push(t);
+
+    visited[t] = true;
+
+    int cur = 0; // distance
+
+    while (!q.empty())
+    {
+        int s = q.size();
+
+        if (cur++ == k)
+        {
+            break;
+        }
+
+        for (int i = 0; i < s; i++)
+        {
+            Node *current = q.front();
+            q.pop();
+
+            if (current->l && !visited[current->l])
+            {
+                q.push(current->l);
+                visited[current->l] = true;
+            }
+
+            if (current->r && !visited[current->r])
+            {
+                q.push(current->r);
+                visited[current->r] = true;
+            }
+
+            if (parent_track[current] && !visited[parent_track[current]]) // traversing the parent of the current node
+            {
+                q.push(parent_track[current]);
+                visited[parent_track[current]] = true;
+            }
+        }
+    }
+
+    vector<int> ans;
+
+    while (!q.empty())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        ans.push_back(current->data);
+    }
+
+    return ans;
+}
+
+Node *findNode(Node *root, int val)
+{
+    if (!root)
+    {
+        return nullptr;
+    }
+
+    if (root->data == val)
+    {
+        return root;
+    }
+
+    Node *left = findNode(root->l, val);
+    if (left)
+    {
+        return left;
+    }
+
+    return findNode(root->r, val);
+}
+
+int main()
+{
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
+
+    insert(root, arr);
+
+    int t, k;
+    cout << "Enter the value of the target node -> ";
+    cin >> t;
+
+    cout << "Enter the distance k -> ";
+    cin >> k;
+
+    Node *targetNode = findNode(root, t);
+
+    if (!targetNode)
+    {
+        cout << "Target node not found in the tree.\n";
+        return 0;
+    }
+
+    vector<int> result = distK(root, targetNode, k);
+
+    if (result.empty())
+    {
+        cout << "No nodes found at distance " << k << " from the target node.\n";
+    }
+    else
+    {
+        cout << "Nodes at distance " << k << " from the target node are -> " << endl;
+
+        for (int i : result)
+        {
+            cout << i << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}

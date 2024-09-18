@@ -1,0 +1,122 @@
+
+#include <bits/stdc++.h>
+
+// A Complete binary has all filled levels except for the last one and all the nodes in the last level are as left as possible
+
+// We have to find the number of nodes present
+
+// Brute force approach
+
+// T.C. -> O(N)
+// S.C. -> O(N)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    queue<Node *> q;
+    int i = 0;
+
+    if (arr[i] != -1)
+    {
+        root = new Node(arr[i]);
+        q.push(root);
+    }
+
+    i++;
+
+    while (!q.empty() && i < arr.size())
+    {
+        Node *current = q.front();
+        q.pop();
+
+        // left child
+        if (arr[i] != -1)
+        {
+            current->l = new Node(arr[i]);
+            q.push(current->l);
+        }
+
+        i++;
+
+        // right child
+        if (i < arr.size() && arr[i] != -1)
+        {
+            current->r = new Node(arr[i]);
+            q.push(current->r);
+        }
+        i++;
+    }
+}
+
+void inorder(Node *root, int &count)
+{
+
+    if (root == nullptr)
+    {
+        return;
+    }
+
+    count++;
+
+    inorder(root->l, count);
+
+        inorder(root->r, count);
+}
+
+int countNodes(Node *root)
+{
+
+    if (root == nullptr)
+    {
+        return 0;
+    }
+
+    int count = 0;
+
+    inorder(root, count);
+
+    return count;
+}
+
+int main()
+{
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes (including nulls as -1) -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for node " << (i + 1) << " -> ";
+        cin >> arr[i];
+    }
+
+    insert(root, arr);
+
+    int ans = countNodes(root);
+
+    cout << "Total number of nodes in the Complete Binary Tree is ->  " << ans << endl;
+
+    return 0;
+}

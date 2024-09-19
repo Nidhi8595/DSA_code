@@ -1,0 +1,154 @@
+#include <bits/stdc++.h>
+
+// we have to insert a Node at correct position in a given BST
+// Optimal approach
+
+// T.C. -> O(log N)
+// S.C. -> O(1)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, int val)
+{
+    if (root == nullptr)
+    {
+        root = new Node(val);
+        return;
+    }
+
+    // left subtree
+    if (val < root->data)
+    {
+        insert(root->l, val);
+    }
+
+    // right subtree
+    else if (val > root->data)
+    {
+        insert(root->r, val);
+    }
+    // If val == root->data , nothing bcuz (no duplicates in BST)
+}
+
+void insertBST(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    for (int val : arr)
+    {
+        if (val != -1)
+        {
+            insert(root, val);
+        }
+    }
+}
+
+Node *InsertNode(Node *root, int x)
+{
+
+    if (root == nullptr)
+    {
+        return new Node(x);
+    }
+
+    Node *cur = root;
+    Node *parent = nullptr;
+
+    while (cur != nullptr)
+    {
+        parent = cur;
+
+        if (x < cur->data)
+        {
+            cur = cur->l;
+        }
+
+        else if (x > cur->data)
+        {
+            cur = cur->r;
+        }
+
+        else
+        {
+            return root;
+        }
+    }
+
+    if (x < parent->data)
+    {
+        parent->l = new Node(x);
+    }
+
+    else
+    {
+        parent->r = new Node(x);
+    }
+
+    return root;
+}
+
+void printInOrder(Node *root)
+{
+
+    if (root == nullptr)
+    {
+
+        return;
+    }
+
+    printInOrder(root->l);
+
+    cout << root->data << " ";
+
+    printInOrder(root->r);
+}
+
+int main()
+{
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for nodes :- ";
+        cin >> arr[i];
+    }
+
+    insertBST(root, arr);
+
+    cout << "Binary Search Tree -> " << endl;
+    printInOrder(root);
+    cout << endl;
+
+    int t;
+    cout << "Enter the Node to be inserted -> " << endl;
+    cin >> t;
+
+    root = InsertNode(root, t);
+
+    cout << "Binary Search Tree after inserting " << t << " -> " << endl;
+    printInOrder(root);
+    cout << endl;
+
+    return 0;
+}

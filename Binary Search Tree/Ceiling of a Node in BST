@@ -1,0 +1,147 @@
+#include <bits/stdc++.h>
+
+// we have to find the ceiling of a given node, i.e. the smallest node in given BST which has a value greater than or equal to current node
+
+// Optimal approach
+
+// T.C. -> O(log 2N)
+// S.C. -> O(1)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, int val)
+{
+    if (root == nullptr)
+    {
+        root = new Node(val);
+        return;
+    }
+
+    // left subtree
+    if (val < root->data)
+    {
+        insert(root->l, val);
+    }
+
+    // right subtree
+    else if (val > root->data)
+    {
+        insert(root->r, val);
+    }
+    // If val == root->data , nothing bcuz (no duplicates in BST)
+}
+
+void insertBST(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    for (int val : arr)
+    {
+        if (val != -1)
+        {
+            insert(root, val);
+        }
+    }
+}
+
+int findCeil(Node *root, int key)
+{
+    int ceil = -1;
+
+    while (root)
+    {
+
+        if (root->data == key)
+        {
+            ceil = root->data;
+            return ceil;
+        }
+
+        // right subtree
+        if (key > root->data)
+        {
+            root = root->r;
+        }
+
+        // left subtree
+        else
+        {
+            ceil = root->data;
+            root = root->l;
+        }
+    }
+
+    return ceil;
+}
+
+void printInOrder(Node *root)
+{
+
+    if (root == nullptr)
+    {
+
+        return;
+    }
+
+    printInOrder(root->l);
+
+    cout << root->data << " ";
+
+    printInOrder(root->r);
+}
+
+int main()
+{
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for nodes :- ";
+        cin >> arr[i];
+    }
+
+    insertBST(root, arr);
+
+    cout << "Binary Search Tree -> " << endl;
+    printInOrder(root);
+    cout << endl;
+
+    int t;
+    cout << "Enter the key -> " << endl;
+    cin >> t;
+
+    int ans = findCeil(root, t);
+
+    if (ans != -1)
+    {
+        cout << "Ceiling of " << t << " is -> " << ans << endl;
+    }
+
+    else
+    {
+        cout << "Ceiling not found in BST";
+    }
+
+    return 0;
+}

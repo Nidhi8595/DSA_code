@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 
-// we have to insert a Node at correct position in a given BST
+// we have to delete a given Node at in a given BST as well as update BST
+
 // Optimal approach
 
-// T.C. -> O(log N)
+// T.C. -> O(height of BST)
 // S.C. -> O(1)
 
 using namespace std;

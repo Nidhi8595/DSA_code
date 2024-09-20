@@ -1,0 +1,190 @@
+#include <bits/stdc++.h>
+
+// we have to insert a Node at correct position in a given BST
+// Optimal approach
+
+// T.C. -> O(log N)
+// S.C. -> O(1)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, int val)
+{
+    if (root == nullptr)
+    {
+        root = new Node(val);
+        return;
+    }
+
+    // left subtree
+    if (val < root->data)
+    {
+        insert(root->l, val);
+    }
+
+    // right subtree
+    else if (val > root->data)
+    {
+        insert(root->r, val);
+    }
+    // If val == root->data , nothing bcuz (no duplicates in BST)
+}
+
+void insertBST(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    for (int val : arr)
+    {
+        if (val != -1)
+        {
+            insert(root, val);
+        }
+    }
+}
+
+Node *findLastRight(Node *root)
+{
+    if (root->r == nullptr)
+    {
+        return root;
+    }
+
+    return findLastRight(root->r);
+}
+
+Node *helper(Node *root)
+{
+
+    if (root->l == nullptr)
+    {
+
+        return root->r;
+    }
+
+    else if (root->r == nullptr)
+    {
+        return root->l;
+    }
+
+    Node *right = root->r;
+    Node *lastRight = findLastRight(root->l);
+
+    lastRight->r = right;
+
+    return root->l;
+}
+
+Node *DeleteNode(Node *root, int x)
+{
+    if (root == nullptr)
+    {
+        return nullptr;
+    }
+
+    if (root->data == x)
+    {
+        return helper(root);
+    }
+
+    Node *dummy = root;
+    while (root != nullptr)
+    {
+
+        if (root->data > x)
+        {
+            if (root->l != nullptr && root->l->data == x)
+            {
+                root->l = helper(root->l);
+                break;
+            }
+
+            else
+            {
+                root = root->l;
+            }
+        }
+
+        else
+        {
+            if (root->r != nullptr && root->r->data == x)
+            {
+
+                root->r = helper(root->r);
+                break;
+            }
+
+            else
+            {
+                root = root->r;
+            }
+        }
+    }
+    return dummy;
+}
+
+void printInOrder(Node *root)
+{
+
+    if (root == nullptr)
+    {
+
+        return;
+    }
+
+    printInOrder(root->l);
+
+    cout << root->data << " ";
+
+    printInOrder(root->r);
+}
+
+int main()
+{
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for nodes :- ";
+        cin >> arr[i];
+    }
+
+    insertBST(root, arr);
+
+    cout << "Binary Search Tree -> " << endl;
+    printInOrder(root);
+    cout << endl;
+
+    int t;
+    cout << "Enter the Node to be deleted -> " << endl;
+    cin >> t;
+
+    root = DeleteNode(root, t);
+
+    cout << "Binary Search Tree after deleting " << t << " -> " << endl;
+    printInOrder(root);
+    cout << endl;
+
+    return 0;
+}

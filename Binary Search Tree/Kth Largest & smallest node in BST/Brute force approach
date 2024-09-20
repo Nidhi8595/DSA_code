@@ -1,0 +1,137 @@
+#include <bits/stdc++.h>
+
+// we have to return the kth Largest & kth smallest Node in given BST
+
+// Brute force approach
+
+// T.C. -> O(N)
+// S.C. -> O(N)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, int val)
+{
+    if (root == nullptr)
+    {
+        root = new Node(val);
+        return;
+    }
+
+    // left subtree
+    if (val < root->data)
+    {
+        insert(root->l, val);
+    }
+
+    // right subtree
+    else if (val > root->data)
+    {
+        insert(root->r, val);
+    }
+    // If val == root->data , nothing bcuz (no duplicates in BST)
+}
+
+void insertBST(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    for (int val : arr)
+    {
+        if (val != -1)
+        {
+            insert(root, val);
+        }
+    }
+}
+
+// INORDER traversal
+void inorder(Node *node, vector<int> &arr)
+{
+    if (node == nullptr)
+    {
+        return;
+    }
+    // left subtree
+    inorder(node->l, arr);
+
+    arr.push_back(node->data);
+
+    // right subtree
+    inorder(node->r, arr);
+    return;
+}
+
+pair<int, int> findKth(Node *node, int k)
+{
+
+    vector<int> arr;
+
+    inorder(node, arr);
+
+    int kLargest = arr[arr.size() - k];
+    int kSmallest = arr[k - 1];
+
+    return make_pair(kSmallest, kLargest);
+}
+
+void printInOrder(Node *root)
+{
+
+    if (root == nullptr)
+    {
+
+        return;
+    }
+
+    printInOrder(root->l);
+
+    cout << root->data << " ";
+
+    printInOrder(root->r);
+}
+
+int main()
+{
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for nodes :- ";
+        cin >> arr[i];
+    }
+
+    insertBST(root, arr);
+
+    int k;
+    cout << "Enter the value of k -> " << endl;
+    cin >> k;
+
+    pair<int, int> ans = findKth(root, k);
+
+    cout << k << "th Largest element is -> " << ans.second << endl;
+
+    cout << k << "th smallest element is -> " << ans.first << endl;
+
+    return 0;
+}

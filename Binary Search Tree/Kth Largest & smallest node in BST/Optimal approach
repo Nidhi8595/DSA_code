@@ -1,0 +1,150 @@
+#include <bits/stdc++.h>
+
+// we have to return the kth Largest & kth smallest Node in given BST
+
+// Optimal approach
+
+// T.C. -> O(N)
+// S.C. -> O(1)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, int val)
+{
+    if (root == nullptr)
+    {
+        root = new Node(val);
+        return;
+    }
+
+    // left subtree
+    if (val < root->data)
+    {
+        insert(root->l, val);
+    }
+
+    // right subtree
+    else if (val > root->data)
+    {
+        insert(root->r, val);
+    }
+    // If val == root->data , nothing bcuz (no duplicates in BST)
+}
+
+void insertBST(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    for (int val : arr)
+    {
+        if (val != -1)
+        {
+            insert(root, val);
+        }
+    }
+}
+
+void reverseInorder(Node *node, int &counter, int k, int &kLargest)
+{
+    if (node == nullptr || counter >= k)
+    {
+        return;
+    }
+
+    // right subtree
+    reverseInorder(node->r, counter, k, kLargest);
+
+    counter++;
+
+    if (counter == k)
+    {
+        kLargest = node->data;
+        return;
+    }
+
+    // left subtree in case the Kth largest is not found yet
+    reverseInorder(node->l, counter, k, kLargest);
+}
+
+void inorder(Node *node, int &counter, int k, int &kSmallest)
+{
+    if (node == nullptr || counter >= k)
+    {
+        return;
+    }
+
+    // left subtree
+    inorder(node->l, counter, k, kSmallest);
+
+    counter++;
+
+    if (counter == k)
+    {
+        kSmallest = node->data;
+        return;
+    }
+
+    // right subtree in case the Kth smallest is not found yet
+    inorder(node->r, counter, k, kSmallest);
+}
+
+pair<int, int> findKth(Node *root, int k)
+{
+    int kSmallest = INT_MIN, kLargest = INT_MIN;
+
+    // kth smallest
+    int counter = 0;
+    inorder(root, counter, k, kSmallest);
+
+    // Kth largest
+    counter = 0;
+    reverseInorder(root, counter, k, kLargest);
+
+    return make_pair(kSmallest, kLargest);
+}
+
+int main()
+{
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for nodes :- ";
+        cin >> arr[i];
+    }
+
+    insertBST(root, arr);
+
+    int k;
+    cout << "Enter the value of k -> " << endl;
+    cin >> k;
+
+    pair<int, int> ans = findKth(root, k);
+
+    cout << k << "th Largest element is -> " << ans.second << endl;
+
+    cout << k << "th smallest element is -> " << ans.first << endl;
+
+    return 0;
+}

@@ -1,0 +1,161 @@
+#include <bits/stdc++.h>
+
+// We have to find the Lowest Common Ancestor of two given nodes in a BST
+
+// Optimal approach
+
+// T.C. -> O(Height of BST)
+// S.C. -> O(1)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+void insert(Node *&root, int val)
+{
+    if (root == nullptr)
+    {
+        root = new Node(val);
+        return;
+    }
+
+    // left subtree
+    if (val < root->data)
+    {
+        insert(root->l, val);
+    }
+
+    // right subtree
+    else if (val > root->data)
+    {
+        insert(root->r, val);
+    }
+    // If val == root->data , nothing bcuz (no duplicates in BST)
+}
+
+void insertBST(Node *&root, const vector<int> &arr)
+{
+    if (arr.empty())
+    {
+        return;
+    }
+
+    for (int val : arr)
+    {
+        if (val != -1)
+        {
+            insert(root, val);
+        }
+    }
+}
+
+// to find the node with a given value
+Node *findNode(Node *root, int val)
+{
+    if (!root)
+    {
+        return nullptr;
+    }
+    if (root->data == val)
+    {
+        return root;
+    }
+
+    Node *leftSearch = findNode(root->l, val);
+    if (leftSearch)
+    {
+        return leftSearch;
+    }
+
+    return findNode(root->r, val);
+}
+
+Node *LCA(Node *root, Node *p, Node *q)
+{
+    if ((p->data) > (q->data))
+    {
+        swap(p, q);
+    }
+
+    Node *current = root;
+    while (current != nullptr)
+    {
+        // LCA in the right subtree
+        if (current->data < p->data) // if it's less than p then automatically less than q as well
+        {
+            current = current->r;
+        }
+
+        // LCA in the left subtree
+        else if (current->data > q->data)
+        {
+            current = current->l;
+        }
+
+        // split point i.e. -> LCA
+        else
+        {
+            return current;
+        }
+    }
+
+    return nullptr; // In case there's no LCA found
+}
+
+int main()
+{
+    Node *root = nullptr;
+    int n;
+
+    cout << "Enter the number of nodes -> ";
+    cin >> n;
+
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cout << "Enter value for nodes :- ";
+        cin >> arr[i];
+    }
+
+    insertBST(root, arr);
+
+    int a, b;
+    cout << "Enter the value of the first node -> ";
+    cin >> a;
+
+    cout << "Enter the value of the second node -> ";
+    cin >> b;
+
+    Node *p = findNode(root, a);
+    Node *q = findNode(root, b);
+
+    if (!p || !q)
+    {
+        cout << "One or both of the nodes were not found in the tree." << endl;
+        return 0;
+    }
+
+    Node *ans = LCA(root, p, q);
+
+    if (ans)
+    {
+        cout << "The Lowest Common Ancestor of nodes " << a << " and " << b << " is -> " << ans->data << endl;
+    }
+    else
+    {
+        cout << "LCA not found." << endl;
+    }
+
+    return 0;
+}

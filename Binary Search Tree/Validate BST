@@ -1,0 +1,74 @@
+#include <bits/stdc++.h>
+
+// We have to check whether a given binary tree is a valid Binary Search Tree
+
+// Optimal approach
+
+// T.C. -> O(N)
+// S.C. -> O(1)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // value
+    Node *l, *r; // l and r child
+
+    // parameterized constructor
+    Node(int val)
+    {
+        data = val;
+        l = r = nullptr;
+    }
+};
+
+bool helper(Node *node, int minValue, int maxValue)
+{
+
+    if (node == nullptr)
+    {
+        return true;
+    }
+
+    if (node->data <= minValue || node->data >= maxValue)
+    {
+        return false;
+    }
+
+    if (helper(node->l, minValue, node->data) && helper(node->r, node->data, maxValue))
+
+    {
+        return true;
+    }
+}
+
+bool isBST(Node *root)
+{
+    return helper(root, INT_MIN, INT_MAX);
+}
+
+int main()
+{
+
+    Node *root = new Node(6);
+    root->l = new Node(2);
+    root->r = new Node(6);
+    root->l->l = new Node(1);
+    root->l->r = new Node(3);
+    root->r->l = new Node(5);
+    root->r->r = new Node(7);
+
+    bool ans = isBST(root);
+
+    if (ans)
+    {
+        cout << "This is a valid Binary Search Tree" << endl;
+    }
+
+    else
+    {
+        cout << "Not a valid Binary Search Tree" << endl;
+    }
+
+    return 0;
+}

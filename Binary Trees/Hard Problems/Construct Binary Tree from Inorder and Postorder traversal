@@ -1,0 +1,121 @@
+#include <bits/stdc++.h>
+
+// We have to construct a Binary Tree from given Inorder and Postorder traversal
+
+// Optimal approach
+
+// T.C. -> O(N)
+// S.C. -> O(N+ logN)
+
+using namespace std;
+
+struct Node
+{
+    int data;    // data value
+    Node *l, *r; // left and right child
+
+    // parameterized constructor
+    Node(int data)
+    {
+        this->data = data;
+        l = r = nullptr;
+    }
+};
+
+Node *helper(vector<int> &inorder, int is, int ie, vector<int> &postorder, int ps, int pe, map<int, int> &hm)
+{
+
+    if (ps > pe || is > ie)
+    {
+        return nullptr;
+    }
+
+    Node *root = new Node(postorder[pe]);
+
+    int inRoot = hm[postorder[pe]];
+
+    // left subtree
+    int numsLeft = inRoot - is;
+
+    root->l = helper(inorder, is, inRoot - 1, postorder, ps, ps + numsLeft - 1, hm);
+
+    root->r = helper(inorder, inRoot + 1, ie, postorder, ps + numsLeft, pe - 1, hm);
+
+    return root;
+}
+
+Node *buildTree(vector<int> &postorder, vector<int> &inorder)
+{
+
+    if (inorder.size() != postorder.size())
+    {
+        return nullptr;
+    }
+
+    map<int, int> hm; // store the indices for elements in inorder sequence
+    for (int i = 0; i < inorder.size(); i++)
+    {
+        hm[inorder[i]] = i;
+    }
+
+    return helper(inorder, 0, inorder.size() - 1, postorder, 0, postorder.size() - 1, hm);
+}
+
+void printInorder(Node *root)
+{
+    if (!root)
+    {
+        return;
+    }
+    printInorder(root->l);
+
+    cout << root->data << " ";
+
+    printInorder(root->r);
+}
+
+void printVector(vector<int> &vec)
+{
+    for (int i = 0; i < vec.size(); i++)
+    {
+        cout << vec[i] << " ";
+    }
+    cout << endl;
+}
+
+int main()
+{
+
+    int n;
+    cout << "Enter the number of nodes -> " << endl;
+    cin >> n;
+
+    vector<int> inorder(n);
+    vector<int> postorder(n);
+
+    cout << "Enter the inorder traversal sequence -> " << endl;
+    for (int i = 0; i < n; ++i)
+    {
+        cin >> inorder[i];
+    }
+
+    cout << "Enter the Postorder traversal sequence -> " << endl;
+    for (int i = 0; i < n; ++i)
+    {
+        cin >> postorder[i];
+    }
+
+    cout << "Inorder Traversal -> ";
+    printVector(inorder);
+
+    cout << "Postorder Traversal -> ";
+    printVector(postorder);
+
+    Node *root = buildTree(postorder, inorder);
+
+    cout << "Inorder of Unique Binary Tree Created -> " << endl;
+    printInorder(root);
+    cout << endl;
+
+    return 0;
+}

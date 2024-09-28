@@ -1,0 +1,91 @@
+#include <bits/stdc++.h>
+
+// T.C. -> O(M*N)* 4
+// S.C. -> O(M*N)
+
+using namespace std;
+
+int RottingOranges(vector<vector<int>> &grid)
+{
+    if (grid.empty())
+    {
+        return 0;
+    }
+
+    int m = grid.size(), n = grid[0].size();
+    int days = 0;  // time taken
+    int total = 0; // rotten + fresh
+    int cnt = 0;   // rotten by us
+
+    queue<pair<int, int>> rotten;
+
+    for (int i = 0; i < m; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            if (grid[i][j] != 0) // not an empty cell
+            {
+                total++;
+            }
+
+            if (grid[i][j] == 2) // is rotten
+            {
+                rotten.push({i, j});
+            }
+        }
+    }
+
+    // traversal in directions
+    int dx[4] = {0, 0, 1, -1};
+    int dy[4] = {1, -1, 0, 0};
+
+    while (!rotten.empty())
+    {
+        int k = rotten.size(); // will process for each rotten orange in the queue at this moment simultaneously
+        cnt += k;
+        while (k--)
+        {
+            int x = rotten.front().first;  // x-coordinate of current rooten orange in queue
+            int y = rotten.front().second; // y-cordinate of current rootrn orange in queue
+            rotten.pop();
+
+            for (int i = 0; i < 4; ++i) // checking for neighbours
+            {
+                int nx = x + dx[i]; // neighbour in x- direction
+                int ny = y + dy[i]; // in y
+
+                if (nx < 0 || ny < 0 || nx >= m || ny >= n || grid[nx][ny] != 1) // nothing to be done as exceeds the boundary or is empty
+                {
+                    continue;
+                }
+
+                // otherwise
+                grid[nx][ny] = 2;      // made it rotten
+                rotten.push({nx, ny}); // and push into queue
+            }
+        }
+
+        if (!rotten.empty())
+        {
+            days++; // increase time for each simultaneous transformation at a time
+        }
+    }
+
+    if (total == cnt)
+    {
+        return days;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+int main()
+{
+    vector<vector<int>> grid{{2, 1, 1}, {1, 1, 0}, {0, 1, 1}};
+
+    int rotting = RottingOranges(grid);
+
+    cout << "Minimum Number of Minutes Required -> " << rotting << endl;
+}

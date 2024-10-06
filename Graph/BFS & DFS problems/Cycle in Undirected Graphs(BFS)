@@ -1,0 +1,106 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// using BFS
+
+vector<vector<int>> AdjacencyList(int n, int m)
+{
+    vector<vector<int>> adj(n + 1);
+
+    for (int i = 0; i < m; i++)
+    {
+        int u, v;
+        cout << "Enter the nodes for edge " << i + 1 << " -> " << endl;
+        cin >> u >> v;
+
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    return adj;
+}
+
+void printGraph(const vector<vector<int>> &adjList, int n)
+{
+    cout << "Adjacency List :- " << endl;
+    for (int i = 1; i <= n; i++)
+    {
+        cout << i << ": ";
+        for (auto node : adjList[i])
+        {
+            cout << node << " ";
+        }
+        cout << endl;
+    }
+}
+
+bool detect(int src, vector<vector<int>> adj, int vis[])
+{
+    vis[src] = 1;
+
+    queue<pair<int, int>> q;
+
+    q.push({src, -1});
+
+    while (!q.empty())
+    {
+        int node = q.front().first;
+        int parent = q.front().second;
+        q.pop();
+
+        for (auto adjacentNode : adj[node])
+        {
+            if (!vis[adjacentNode])
+            {
+                vis[adjacentNode] = 1;
+                q.push({adjacentNode, node});
+            }
+            else if (parent != adjacentNode)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool isCyclic(int V, vector<vector<int>> adj)
+{
+    int vis[V] = {0};
+    for (int i = 0; i < V; i++)
+    {
+        if (!vis[i])
+        {
+            if (detect(i, adj, vis))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main()
+{
+    int n, m;
+
+    cout << "Enter the number of nodes & edges -> " << endl;
+    cin >> n >> m;
+
+    vector<vector<int>> adjList = AdjacencyList(n, m);
+    printGraph(adjList, n);
+
+    bool ans = isCyclic(n, adjList);
+
+    if (ans)
+    {
+        cout << "True" << endl;
+    }
+    else
+    {
+        cout << "False" << endl;
+    }
+
+    return 0;
+}

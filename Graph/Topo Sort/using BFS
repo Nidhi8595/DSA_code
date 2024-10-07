@@ -1,0 +1,101 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// T.C. -> O(N + M)
+// S.C. -> O(2N)
+
+// using BFS
+
+vector<vector<int>> AdjacencyList(int n, int m)
+{
+    vector<vector<int>> adj(n + 1);
+
+    for (int i = 0; i < m; i++)
+    {
+        int u, v;
+        cout << "Enter the nodes for edge " << i + 1 << " -> " << endl;
+        cin >> u >> v;
+
+        adj[u].push_back(v);
+    }
+
+    return adj;
+}
+
+void printGraph(const vector<vector<int>> &adjList, int n)
+{
+    cout << "Adjacency List :- " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cout << i << ": ";
+        for (auto node : adjList[i])
+        {
+            cout << node << " ";
+        }
+        cout << endl;
+    }
+}
+
+vector<int> topoSort(int V, vector<vector<int>> adj)
+{
+    int indegree[V] = {0};
+
+    for (int i = 0; i < V; i++)
+    {
+        for (auto it : adj[i])
+        {
+            indegree[it]++;
+        }
+    }
+
+    queue<int> q;
+
+    for (int i = 0; i < V; i++)
+    {
+        if (indegree[i] == 0)
+        {
+            q.push(i);
+        }
+    }
+
+    vector<int> topo;
+    while (!q.empty())
+    {
+        int node = q.front();
+        q.pop();
+
+        topo.push_back(node);
+
+        for (auto it : adj[node])
+        {
+            indegree[it]--;
+            if (indegree[it] == 0)
+            {
+                q.push(it);
+            }
+        }
+    }
+
+    return topo;
+}
+
+int main()
+{
+    int n, m;
+
+    cout << "Enter the number of nodes & edges -> " << endl;
+    cin >> n >> m;
+
+    vector<vector<int>> adjList = AdjacencyList(n, m);
+    printGraph(adjList, n);
+
+    vector<int> ans = topoSort(n, adjList);
+
+    for (auto node : ans)
+    {
+        cout << node << " ";
+    }
+    cout << endl;
+
+    return 0;
+}

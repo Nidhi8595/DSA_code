@@ -1,0 +1,95 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<vector<int>> AdjacencyList(int n, int m)
+{
+    vector<vector<int>> adj(n);
+
+    for (int i = 0; i < m; i++)
+    {
+        int u, v;
+        cout << "Enter the courses for pair " << i + 1 << " (u having pre-requisite v): ";
+        cin >> u >> v;
+
+        if (u < 0 || u >= n || v < 0 || v >= n)
+        {
+            cout << "Invalid course numbers. Please enter numbers in the range [0, " << n - 1 << "]." << endl;
+            i--;
+            continue;
+        }
+
+        adj[v].push_back(u);
+    }
+
+    return adj;
+}
+
+bool isPossible(int n, const vector<vector<int>> &adjList)
+{
+    vector<int> indegree(n, 0);
+
+    for (int i = 0; i < n; i++)
+    {
+        for (auto v : adjList[i])
+        {
+            indegree[v]++;
+        }
+    }
+
+    queue<int> q;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (indegree[i] == 0)
+        {
+            q.push(i);
+        }
+    }
+
+    int count = 0;
+
+    while (!q.empty())
+    {
+        int node = q.front();
+        q.pop();
+        count++;
+
+        for (auto neighbor : adjList[node])
+        {
+            indegree[neighbor]--;
+            if (indegree[neighbor] == 0)
+            {
+                q.push(neighbor);
+            }
+        }
+    }
+
+    return count == n;
+}
+
+int main()
+{
+    int n, m;
+
+    cout << "Enter the number of courses and pairs: ";
+    cin >> n >> m;
+
+    if (n <= 0 || m < 0)
+    {
+        cout << "Invalid input for number of courses or pairs." << endl;
+        return 1;
+    }
+
+    vector<vector<int>> adjList = AdjacencyList(n, m);
+
+    if (isPossible(n, adjList))
+    {
+        cout << "All courses can be finished (No cycle detected)." << endl;
+    }
+    else
+    {
+        cout << "It's not possible to finish all courses (Cycle detected)." << endl;
+    }
+
+    return 0;
+}

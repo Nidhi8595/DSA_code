@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+// T.C. -> O(N)
+// S.C. -> O(1)
+
+// H index is defined as the count of papers that have a citation equal to or more than the H index
+
+// the count can either be equal to more than the H index, hence we can consider H index only upto the size of array
+
+int hIndex(vector<int> &citations)
+{
+    int n = citations.size();    // total number of papers
+    vector<int> Count(n + 1, 0); // Frequency array to count papers having citations equal to a particular index
+    // we keep the frequency of papers that have a citation more than n, at the nth index of array since there is no way the H index can be more than the size of array
+
+    for (int i = 0; i < n; i++)
+    {
+        if (citations[i] >= n)
+        {
+            Count[n] += 1; // Grouping all citations >= n under Count[n]
+        }
+        else
+        {
+            Count[citations[i]] += 1;
+        }
+    }
+
+    int h = n;        // maximum possible H-Index
+    int p = Count[n]; // Papers with citations >= n
+
+    while (p < h)
+    {
+        h--;           // Decrease the current H-Index guess
+        p += Count[h]; // Add papers with exactly 'h' citations
+    }
+
+    return h;
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the number of papers -> " << endl;
+    cin >> n;
+
+    vector<int> citations(n);
+    cout << "Enter the citations of each paper -> " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        int x;
+        cin >> x;
+        citations[i] = x;
+    }
+
+    int ans = hIndex(citations);
+    cout << "There are " << ans << " papers having a citation count of " << ans << " or more";
+
+    return 0;
+}

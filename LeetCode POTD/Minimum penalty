@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// You are given an integer array nums where the ith bag contains nums[i] balls. You are also given an integer maxOperations.
+
+// You can perform the following operation at most maxOperations times:
+
+// Take any bag of balls and divide it into two new bags with a positive number of balls.
+// For example, a bag of 5 balls can become two new bags of 1 and 4 balls, or two new bags of 2 and 3 balls.
+// Your penalty is the maximum number of balls in a bag. You want to minimize your penalty after the operations.
+
+// Return the minimum possible penalty after performing the operations.
+
+// T.C. -> O(NlogM)
+// N -> number of bags
+// M -> max operations 
+
+
+int minimumSize(vector<int> &nums, int maxOperations)
+{
+    // Binary search bounds
+    int low = 1, high = *max_element(nums.begin(), nums.end());
+    int result = high;
+
+    // Binary search for the minimum penalty
+    while (low <= high)
+    {
+        int mid = low + (high - low) / 2;
+
+        // Check if we can achieve the current penalty `mid`
+        int operations = 0;
+        for (int balls : nums)
+        {
+            operations += (balls - 1) / mid; // Calculate operations needed
+        }
+
+        if (operations <= maxOperations)
+        {
+            result = mid; // Feasible, try for smaller penalty
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1; // Not feasible, increase penalty
+        }
+    }
+
+    return result;
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the number of bags -> " << endl;
+    cin >> n;
+    vector<int> nums(n);
+
+    cout << "Enter the balls in each bag :- " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        int x;
+        cin >> x;
+        nums[i] = x;
+    }
+
+    int maxOp;
+    cout << "Enter the maximum number of operations allowed -> " << endl;
+    cin >> maxOp;
+
+    int result = minimumSize(nums, maxOp);
+    cout << "Penalty will be -> " << result;
+
+    return 0;
+}

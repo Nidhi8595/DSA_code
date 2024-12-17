@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+// Given two sorted arrays a[] and b[] and an element k,
+// the task is to find the element that would be at the kth 
+// position of the combined sorted array.
+
+// Examples :
+
+// Input: a[] = [2, 3, 6, 7, 9], b[] = [1, 4, 8, 10], k = 5
+// Output: 6
+// Explanation: The final combined sorted array would be [1, 2, 3, 4, 6, 7, 8, 9, 10]. 
+// The 5th element of this array is 6.
+
+// Function to find the k-th element in the combined 
+// sorted array of two sorted arrays
+int kthElement(vector<int>& a, vector<int>& b, int k) {
+    int n = a.size(), m = b.size();
+    int i = 0, j = 0, c = 0, ans = 0;
+
+    // Traverse both arrays until the k-th element is found
+    while (c < k) {
+        int x1 = (i < n) ? a[i] : INT_MAX; // Element from a[], or INT_MAX if exhausted
+        int x2 = (j < m) ? b[j] : INT_MAX; // Element from b[], or INT_MAX if exhausted
+
+        if (x1 < x2) {
+            ans = x1;
+            i++; // Increment index of a[]
+        } else {
+            ans = x2;
+            j++; // Increment index of b[]
+        }
+
+        c++; // Increment count of merged elements
+
+        if (c == k) return ans; // If k-th element is reached, return
+    }
+
+    return -1; 
+}
+
+int main() {
+    int n, m, k;
+    vector<int> a, b;
+
+    cout << "Enter the size of the first array: ";
+    cin >> n;
+    cout << "Enter " << n << " sorted elements for the first array: ";
+    a.resize(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+
+    cout << "Enter the size of the second array: ";
+    cin >> m;
+    cout << "Enter " << m << " sorted elements for the second array: ";
+    b.resize(m);
+    for (int i = 0; i < m; i++) {
+        cin >> b[i];
+    }
+
+    cout << "Enter the value of k (1 <= k <= " << n + m << "): ";
+    cin >> k;
+
+    if (k < 1 || k > n + m) {
+        cout << "Invalid k! It must be between 1 and " << n + m << "." << endl;
+        return 1;
+    }
+
+    int result = kthElement(a, b, k);
+    cout << "The " << k << "-th element in the combined sorted array is: " << result << endl;
+
+    return 0;
+}

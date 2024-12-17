@@ -1,0 +1,98 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Given a sorted array, arr[] and a number target,
+// you need to find the number of occurrences of target in arr[].
+
+// Examples :
+
+// Input: arr[] = [1, 1, 2, 2, 2, 2, 3], target = 2
+// Output: 4
+// Explanation: target = 2 occurs 4 times
+//  in the given array so the output is 4.
+
+// Function to count the frequency of a target element in a sorted array
+int countFreq(vector<int> &arr, int target)
+{
+    // Lambda to find the first occurrence of the target
+    auto findFirst = [&](vector<int> &arr, int target) -> int
+    {
+        int low = 0, high = arr.size() - 1, first = -1;
+        while (low <= high)
+        {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] == target)
+            {
+                first = mid;
+                high = mid - 1; // Keep searching in the left part
+            }
+            else if (arr[mid] < target)
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+            }
+        }
+        return first;
+    };
+
+    // Lambda to find the last occurrence of the target
+    auto findLast = [&](vector<int> &arr, int target) -> int
+    {
+        int low = 0, high = arr.size() - 1, last = -1;
+        while (low <= high)
+        {
+            int mid = low + (high - low) / 2;
+            if (arr[mid] == target)
+            {
+                last = mid;
+                low = mid + 1; // Keep searching in the right part
+            }
+            else if (arr[mid] < target)
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+            }
+        }
+        return last;
+    };
+
+    // Find the first and last occurrence
+    int first = findFirst(arr, target);
+    if (first == -1)
+        return 0; // Target not found
+
+    int last = findLast(arr, target);
+    return last - first + 1;
+}
+
+int main()
+{
+    int n, target;
+    vector<int> arr;
+
+    cout << "Enter the size of the array: ";
+    cin >> n;
+
+    cout << "Enter " << n << " elements of the sorted array: ";
+    arr.resize(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    cout << "Enter the target element to count its frequency: ";
+    cin >> target;
+
+    int frequency = countFreq(arr, target);
+
+    cout << "The frequency of " << target << " is: " << frequency << endl;
+
+    return 0;
+}

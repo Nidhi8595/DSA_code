@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Given a sorted and rotated array arr[] of distinct elements,
+// the task is to find the index of a target key.
+// Return -1 if the key is not found.
+
+// Examples :
+
+// Input: arr[] = [5, 6, 7, 8, 9, 10, 1, 2, 3], key = 3
+// Output: 8
+// Explanation: 3 is found at index 8.
+
+// Function to search for a key in a rotated sorted array
+int search(vector<int> &arr, int key)
+{
+    int left = 0, right = arr.size() - 1;
+
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        // Check if mid is the target key
+        if (arr[mid] == key)
+            return mid;
+
+        // Determine which part is sorted
+        if (arr[left] <= arr[mid])
+        {
+            // Left half is sorted
+            if (key >= arr[left] && key < arr[mid])
+                right = mid - 1; // Key is in the left half
+            else
+                left = mid + 1; // Key is in the right half
+        }
+        else
+        {
+            // Right half is sorted
+            if (key > arr[mid] && key <= arr[right])
+                left = mid + 1; // Key is in the right half
+            else
+                right = mid - 1; // Key is in the left half
+        }
+    }
+
+    return -1;
+}
+
+int main()
+{
+    int n, key;
+    vector<int> arr;
+
+    cout << "Enter the size of the array: ";
+    cin >> n;
+
+    cout << "Enter " << n << " elements of the rotated sorted array: ";
+    arr.resize(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    cout << "Enter the key to search: ";
+    cin >> key;
+
+    int index = search(arr, key);
+
+    if (index != -1)
+    {
+        cout << "Key " << key << " found at index: " << index << endl;
+    }
+    else
+    {
+        cout << "Key " << key << " not found in the array." << endl;
+    }
+
+    return 0;
+}

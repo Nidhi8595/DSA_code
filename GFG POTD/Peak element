@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Given an array arr[] where no two adjacent elements are same, find the index of a peak element.
+// An element is considered to be a peak if it is greater than its adjacent elements (if they exist).
+// If there are multiple peak elements, return index of any one of them. The output will be "true"
+// if the index returned by your function is correct; otherwise, it will be "false".
+
+// Note: Consider the element before the first element and the element
+// after the last element to be negative infinity.
+
+// Examples :
+
+// Input: arr = [1, 2, 4, 5, 7, 8, 3]
+// Output: true
+// Explanation: arr[5] = 8 is a peak element
+// because arr[4] < arr[5] > arr[6].
+
+// Function to find the index of a peak element
+int peakElement(vector<int> &arr)
+{
+    int n = arr.size();
+    int low = 0, high = n - 1;
+
+    while (low <= high)
+    {
+        int mid = low + (high - low) / 2;
+
+        // Check if the mid element is a peak
+        if ((mid == 0 || arr[mid - 1] < arr[mid]) &&
+            (mid == n - 1 || arr[mid] > arr[mid + 1]))
+        {
+            return mid;
+        }
+
+        // Move to the left side if the left neighbor is greater
+        if (mid > 0 && arr[mid - 1] > arr[mid])
+        {
+            high = mid - 1;
+        }
+        // Otherwise, move to the right side
+        else
+        {
+            low = mid + 1;
+        }
+    }
+}
+
+int main()
+{
+    int n;
+    vector<int> arr;
+
+    cout << "Enter the size of the array: ";
+    cin >> n;
+
+    cout << "Enter " << n << " elements of the array: ";
+    arr.resize(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    int peakIndex = peakElement(arr);
+
+    cout << "A peak element is at index: " << peakIndex << endl;
+    cout << "Peak element value: " << arr[peakIndex] << endl;
+
+    return 0;
+}

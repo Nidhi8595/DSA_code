@@ -1,0 +1,79 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+// You are given an integer array nums, an integer k,
+// and an integer multiplier.
+
+// You need to perform k operations on nums.
+// In each operation:
+
+// Find the minimum value x in nums. If there are multiple occurrences
+// of the minimum value, select the one that appears first.
+// Replace the selected minimum value x with x * multiplier.
+// Return an integer array denoting the final state of nums
+// after performing all k operations.
+
+// Example 1:
+
+// Input: nums = [2,1,3,5,6], k = 5, multiplier = 2
+
+// Output: [8,4,6,5,6]
+
+// Explanation:
+
+// Operation	Result
+// After operation 1	[2, 2, 3, 5, 6]
+// After operation 2	[4, 2, 3, 5, 6]
+// After operation 3	[4, 4, 3, 5, 6]
+// After operation 4	[4, 4, 6, 5, 6]
+// After operation 5	[8, 4, 6, 5, 6]
+
+using namespace std;
+
+vector<int> getFinalState(vector<int> &nums, int k, int multiplier)
+{
+    using pii = pair<int, int>; // {value, index}
+    priority_queue<pii, vector<pii>, greater<pii>> minHeap;
+
+    // Fill the heap with initial values and their indices.
+    for (int i = 0; i < nums.size(); ++i)
+    {
+        minHeap.push({nums[i], i});
+    }
+
+    // Perform k operations.
+    while (k--)
+    {
+        // Extract the minimum value and its index.
+        auto [minVal, idx] = minHeap.top();
+        minHeap.pop();
+
+        // Update the value at the index in the array.
+        nums[idx] = minVal * multiplier;
+
+        // Push the updated value and index back into the heap.
+        minHeap.push({nums[idx], idx});
+    }
+
+    return nums;
+}
+
+int main()
+{
+    vector<int> nums = {3, 1, 4, 2};
+    int k = 2;
+    int multiplier = 3;
+
+    vector<int> result = getFinalState(nums, k, multiplier);
+
+    // Print the final state of the array.
+    cout << "Final state of the array: ";
+    for (int val : result)
+    {
+        cout << val << " ";
+    }
+    cout << endl;
+
+    return 0;
+}

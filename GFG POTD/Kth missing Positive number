@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Given a sorted array of distinct positive integers arr[],
+//  we need to find the kth positive number that is
+//   missing from arr[].
+
+// Examples :
+
+// Input: arr[] = [2, 3, 4, 7, 11], k = 5
+// Output: 9
+// Explanation: Missing are 1, 5, 6, 8, 9, 10…
+// and 5th missing number is 9.
+
+// optimal approach
+
+int missing(int n, int arr[], int k)
+{
+    int l = 0, h = n - 1;
+    while (l <= h)
+    {
+        int m = (l + h) / 2;
+        int miss = arr[m] - (m + 1);
+        if (miss < k)
+        {
+            l = m + 1;
+        }
+        else
+        {
+            h = m - 1;
+        }
+    }
+    return k + h + 1;
+}
+int main()
+{
+    int n, k;
+    cout << "Enter the size of array -> ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the elements of the array / increasing order -> ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    cout << "Enter the target -> ";
+    cin >> k;
+    int ans = missing(n, arr, k);
+    cout << "The " << k << "th missing number is -> " << ans;
+    return 0;
+}

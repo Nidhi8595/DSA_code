@@ -1,0 +1,88 @@
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Given a row-wise sorted 2D matrix mat[][] of size n x m and an integer x,
+// find whether element x is present in the matrix.
+// Note: In a row-wise sorted matrix, each row is sorted in itself,
+// i.e. for any i, j within bounds, mat[i][j] <= mat[i][j+1].
+
+// Examples :
+
+// Input: mat[][] = [[3, 4, 9],[2, 5, 6],[9, 25, 27]],
+//  x = 9
+// Output: true
+// Explanation: 9 is present in the matrix, so the output is true.
+
+bool searchRowMatrix(vector<vector<int>> &mat, int x)
+{
+    int n = mat.size(); // Number of rows
+    if (n == 0)
+        return false;      // Empty matrix
+    int m = mat[0].size(); // Number of columns
+    if (m == 0)
+        return false; // Empty row
+
+    for (int i = 0; i < n; i++)
+    {
+        // Apply binary search on each row
+        int low = 0, high = m - 1;
+        while (low <= high)
+        {
+            int mid = low + (high - low) / 2;
+            if (mat[i][mid] == x)
+            {
+                return true; // Element found
+            }
+            else if (mat[i][mid] < x)
+            {
+                low = mid + 1; // Move right
+            }
+            else
+            {
+                high = mid - 1; // Move left
+            }
+        }
+    }
+
+    return false; // Element not found
+}
+
+int main()
+{
+    int rows, cols, x;
+
+    // Input number of rows and columns
+    cout << "Enter the number of rows in the matrix: ";
+    cin >> rows;
+    cout << "Enter the number of columns in the matrix: ";
+    cin >> cols;
+
+    // Input matrix elements
+    vector<vector<int>> mat(rows, vector<int>(cols));
+    cout << "Enter the elements of the matrix row by row:" << endl;
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            cin >> mat[i][j];
+        }
+    }
+
+    // Input the element to search
+    cout << "Enter the element to search: ";
+    cin >> x;
+
+    // Call the function and display result
+    if (searchRowMatrix(mat, x))
+    {
+        cout << "Element " << x << " is found in the matrix." << endl;
+    }
+    else
+    {
+        cout << "Element " << x << " is not found in the matrix." << endl;
+    }
+
+    return 0;
+}

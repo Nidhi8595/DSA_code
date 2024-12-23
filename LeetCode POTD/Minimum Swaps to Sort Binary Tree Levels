@@ -1,0 +1,145 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// You are given the root of a binary tree with unique values.
+
+// In one operation, you can choose any two nodes at the same level and swap their values.
+
+// Return the minimum number of operations needed to make the values at each level
+// sorted in a strictly increasing order.
+
+// The level of a node is the number of edges along the path between it and the root node.
+
+// T.C. -> O(N+K⋅logK), where 𝐾 is the average level size.
+
+// Definition for a binary tree node
+struct TreeNode
+{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+class Solution
+{
+public:
+    int minimumOperations(TreeNode *root)
+    {
+        if (!root)
+            return 0;
+
+        int totalSwaps = 0;
+        queue<TreeNode *> q;
+        q.push(root);
+
+        while (!q.empty())
+        {
+            int size = q.size();
+            vector<int> level;
+
+            for (int i = 0; i < size; i++)
+            {
+                TreeNode *node = q.front();
+                q.pop();
+                level.push_back(node->val);
+                if (node->left)
+                    q.push(node->left);
+                if (node->right)
+                    q.push(node->right);
+            }
+
+            totalSwaps += minSwapsToSort(level);
+        }
+
+        return totalSwaps;
+    }
+
+private:
+    int minSwapsToSort(vector<int> &arr)
+    {
+        int n = arr.size();
+        vector<pair<int, int>> sortedArr;
+
+        for (int i = 0; i < n; i++)
+        {
+            sortedArr.push_back({arr[i], i});
+        }
+        sort(sortedArr.begin(), sortedArr.end());
+
+        vector<bool> visited(n, false);
+        int swaps = 0;
+
+        for (int i = 0; i < n; i++)
+        {
+            if (visited[i] || sortedArr[i].second == i)
+                continue;
+
+            int cycleSize = 0;
+            int j = i;
+
+            while (!visited[j])
+            {
+                visited[j] = true;
+                j = sortedArr[j].second;
+                cycleSize++;
+            }
+
+            if (cycleSize > 1)
+                swaps += (cycleSize - 1);
+        }
+
+        return swaps;
+    }
+};
+
+void addNode(TreeNode *&root, int val)
+{
+    if (!root)
+    {
+        root = new TreeNode(val);
+    }
+    else
+    {
+        queue<TreeNode *> q;
+        q.push(root);
+        while (!q.empty())
+        {
+            TreeNode *curr = q.front();
+            q.pop();
+            if (!curr->left)
+            {
+                curr->left = new TreeNode(val);
+                return;
+            }
+            else if (!curr->right)
+            {
+                curr->right = new TreeNode(val);
+                return;
+            }
+            else
+            {
+                q.push(curr->left);
+                q.push(curr->right);
+            }
+        }
+    }
+}
+
+int main()
+{
+    Solution solution;
+
+    // Example: Build tree
+    TreeNode *root = nullptr;
+    vector<int> values = {3, 9, 20, 15, 7}; // Level-order insertion
+    for (int val : values)
+    {
+        addNode(root, val);
+    }
+
+    int result = solution.minimumOperations(root);
+    cout << "Minimum operations to sort all levels: " << result << endl;
+
+    return 0;
+}

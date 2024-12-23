@@ -1,0 +1,94 @@
+#include <iostream>
+#include <vector>
+#include <functional>
+using namespace std;
+
+// There is an undirected tree with n nodes labeled from 0 to n - 1.
+// You are given the integer n and a 2D integer array edges of length n - 1,
+// where edges[i] = [ ai, bi ] indicates that there is an edge between nodes ai and bi in the tree.
+
+// You are also given a 0 - indexed integer array values of length n,
+// where values[i] is the value associated with the ith node and an integer k.
+
+// A valid split of the tree is obtained by removing any set of edges,
+// possibly empty, from the tree such that the resulting components all have
+// values that are divisible by k, where the value of a connected component is
+// the sum of the values of its nodes.
+
+// Return the maximum number of components in any valid split.
+
+// Example 1 :
+
+//     Input : n = 5,
+//    edges = [ [ 0, 2 ], [ 1, 2 ], [ 1, 3 ], [ 2, 4 ] ], values = [ 1, 8, 1, 4, 4 ], k = 6
+// Output : 2
+// Explanation : We remove the edge connecting node 1 with 2.
+// The resulting split is valid because :
+// -The value of the component containing nodes 1 and 3 is values[1] + values[3] = 12.
+// - The value of the component containing nodes 0, 2, and4 is values[0] + values[2] + values[4] = 6.
+// It can be shown that no other valid split has more than 2 connected components.
+
+int maxKDivisibleComponents(int n, vector<vector<int>> &edges, vector<int> &values, int k)
+{
+    // Step 1: Build adjacency list
+    vector<vector<int>> adj(n);
+    for (auto &edge : edges)
+    {
+        adj[edge[0]].push_back(edge[1]);
+        adj[edge[1]].push_back(edge[0]);
+    }
+
+    vector<bool> visited(n, false);
+    int components = 0;
+
+    // Step 2: DFS function to calculate sum (using long long for safety)
+    function<long long(int)> dfs = [&](int node)
+    {
+        visited[node] = true;
+        long long sum = values[node]; // Start with node's value
+
+        for (int neighbor : adj[node])
+        {
+            if (!visited[neighbor])
+            {
+                sum += dfs(neighbor);
+            }
+        }
+
+        // Step 3: If sum is divisible by k, increment components and reset sum
+        if (sum % k == 0)
+        {
+            components++;
+            return 0LL; // This component is done
+        }
+        return sum; // Return remaining sum
+    };
+
+    // Step 4: Iterate through all nodes
+    for (int i = 0; i < n; i++)
+    {
+        if (!visited[i])
+        {
+            dfs(i);
+        }
+    }
+
+    return components;
+}
+
+int main()
+{
+    // Example input
+    int n = 5;
+    vector<vector<int>> edges = {{0, 1}, {0, 2}, {2, 3}, {3, 4}};
+    vector<int> values = {5, 10, 15, 20, 25};
+    int k = 15;
+
+    // Function call to get the result
+    int result = maxKDivisibleComponents(n, edges, values, k);
+
+    // Output the result
+    cout << "Number of components divisible by " << k << ": " << result << endl;
+
+    return 0;
+}

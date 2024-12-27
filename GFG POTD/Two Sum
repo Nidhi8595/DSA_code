@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// Given an array arr[] of positive integers and another integer target.
+// Determine if there exists two distinct indices such that the
+// sum of there elements is equals to target.
+
+// Examples:
+
+// Input: arr[] = [1, 4, 45, 6, 10, 8], target = 16
+// Output: true
+// Explanation: arr[3] + arr[4] = 6 + 10 = 16.
+
+// T.C. -> O(nLogn)
+
+bool twoSum(vector<int> &arr, int target)
+{
+    int s = arr.size();
+    if (s < 2)
+        return false;
+
+    sort(arr.begin(), arr.end());
+
+    int i = 0, j = s - 1;
+
+    // Two-pointer traversal
+    while (i < j)
+    {
+        int sum = arr[i] + arr[j];
+        if (sum == target)
+        {
+            return true;
+        }
+        else if (sum < target)
+        {
+            i++;
+        }
+        else
+        {
+            j--;
+        }
+    }
+
+    return false; // No pair found
+}
+
+int main()
+{
+    vector<int> arr = {10, 15, 3, 7};
+    int target = 17;
+
+    if (twoSum(arr, target))
+    {
+        cout << "A pair exists that sums to " << target << "." << endl;
+    }
+    else
+    {
+        cout << "No pair exists that sums to " << target << "." << endl;
+    }
+
+    return 0;
+}

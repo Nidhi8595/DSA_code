@@ -1,0 +1,27 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int minimumOperations(vector<int>& nums) {
+        vector<int> mpp(101); // To count frequency of numbers (0-100)
+        for (int i = nums.size() - 1; i >= 0; --i)
+            if (++mpp[nums[i]] > 1)
+                return (i + 3) / 3; // Compute minimum operations
+        return 0;
+    }
+};
+
+int main() {
+    Solution sol;
+
+    // Example test case
+    vector<int> nums = {1, 2, 3, 1};
+
+    int result = sol.minimumOperations(nums);
+
+    cout << "Minimum operations: " << result << endl;
+
+    return 0;
+}

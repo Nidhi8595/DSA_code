@@ -1,0 +1,27 @@
+#include <iostream>
+#include <climits>
+using namespace std;
+
+int main() {
+    int T;
+    cin >> T; // Number of test cases
+
+    while (T--) {
+        int N;
+        cin >> N; // Number of mountains
+
+        int maxHeight = INT_MIN; // Initialize to smallest possible value
+
+        for (int i = 0; i < N; ++i) {
+            int height;
+            cin >> height;
+            if (height > maxHeight) {
+                maxHeight = height;
+            }
+        }
+
+        cout << maxHeight << endl; // Output the tallest mountain height
+    }
+
+    return 0;
+}

@@ -1,0 +1,22 @@
+class Solution {
+  public:
+    
+    pair<int, int> fun(Node* root){
+        if(!root)
+            return {0, 0};
+        auto l = fun(root->left);
+        auto r = fun(root->right);
+        
+        int include = (root->data)+(l.second)+(r.second);
+        int exclude = max(l.first, l.second)+max(r.second, r.first);
+        
+        return {include, exclude};
+    }
+    
+    int getMaxSum(Node *root) {
+        
+        auto res = fun(root);
+        return max(res.first, res.second);
+        
+    }
+};

@@ -1,0 +1,27 @@
+class Solution {
+  public:
+    int loopLength(Node* start){
+        int cnt =1;
+        Node* temp = start->next;
+        
+        while(temp!=start){
+            cnt++;
+            temp=temp->next;
+        }
+        
+        return cnt;
+    }
+    int countNodesinLoop(Node *head) {
+        Node* slow = head;
+        Node* fast = head;
+         
+        while(fast!=NULL && fast->next!=NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+            
+            if(slow==fast) return loopLength(slow);
+        }
+        
+        return 0;
+    }
+};

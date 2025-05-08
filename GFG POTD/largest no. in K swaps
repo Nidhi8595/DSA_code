@@ -1,0 +1,42 @@
+class Solution {
+  public:
+    void solve(int index, string &s, string &ans, int k) {
+        ans = max(s, ans);
+        
+        if (k == 0 || index >= s.size()) {
+            return;
+        }
+
+        // Find the maximum character from the current index to the end
+        char mx = s[index];
+        for (int i = index + 1; i < s.size(); i++) {
+            if (s[i] > mx) {
+                mx = s[i];
+            }
+        }
+
+        // If the current character is already the maximum, move to the next index
+        if (s[index] == mx) {
+            solve(index + 1, s, ans, k);
+            return;
+        }
+
+        // Try swapping with every occurrence of the max character
+        for (int i = index + 1; i < s.size(); i++) {
+            if (s[i] == mx) {
+                swap(s[index], s[i]);
+                solve(index + 1, s, ans, k - 1);
+                swap(s[index], s[i]);  // Backtrack
+                
+                //After the recursive call completes, undo the swap to restore the original string.
+                //This allows the function to try a different swap in the next iteration.
+            }
+        }
+    }
+
+    string findMaximumNum(string& s, int k) {
+        string ans = s;
+        solve(0, s, ans, k);
+        return ans;
+    }
+};

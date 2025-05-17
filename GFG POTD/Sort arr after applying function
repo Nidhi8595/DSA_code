@@ -1,0 +1,6 @@
+vector<int>ans;
+        for(auto it:arr){
+            ans.push_back(A*it*it+B*it+C);
+        }
+        sort(ans.begin(),ans.end());
+        return ans;

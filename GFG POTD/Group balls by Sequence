@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool validgroup(vector<int> &arr, int k) {
+        int n = arr.size();
+        if (n % k != 0) return false;  // Must divide evenly into groups
+
+        map<int,int> cnt;
+        for (int x : arr) {
+            ++cnt[x];  // Build frequency map
+        }
+
+        // Process groups starting from smallest number
+        for (auto it = cnt.begin(); it != cnt.end(); ++it) {
+            int start = it->first;
+            int freq  = it->second;
+            if (freq > 0) {
+                // Try to subtract freq from each number in [start, start + k - 1]
+                for (int x = start; x < start + k; ++x) {
+                    if (cnt[x] < freq) return false;
+                    cnt[x] -= freq;
+                }
+            }
+        }
+
+        return true;
+    }
+};        
